@@ -137,7 +137,7 @@
 
 		&:hover {
 			border-bottom-color: transparent;
-			color: _palette(accent1, bg) !important;
+			color: #990033 !important;
 		}
 	}
 
@@ -360,7 +360,7 @@
 
 		&.major {
 			h2 {
-				color: _palette(accent1, bg);
+				color: #990033;
 				font-size: 3.5em;
 
 				& + p {
@@ -416,7 +416,7 @@
 		}
 
 		&:focus {
-			border-color: _palette(accent1, bg);
+			border-color: #990033;
 		}
 	}
 
@@ -505,7 +505,7 @@
 
 		&:focus + label {
 			&:before {
-				border-color: _palette(accent1, bg);
+				border-color: #990033;
 			}
 		}
 	}
@@ -900,7 +900,7 @@
 			width: 48%;
 
 			&:before {
-				background: _palette(accent1, bg);
+				background: #990033;
 				border-radius: 100%;
 				color: _palette(accent1, fg-bold);
 				display: block;
@@ -1087,15 +1087,15 @@
 		}
 
 		&.primary {
-			background-color: _palette(accent1, bg);
+			background-color: #990033;
 			color: _palette(accent1, fg-bold) !important;
 
 			&:hover {
-				background-color: lighten(_palette(accent1, bg), 5);
+				background-color: lighten(#990033, 5);
 			}
 
 			&:active {
-				background-color: darken(_palette(accent1, bg), 5);
+				background-color: darken(#990033, 5);
 			}
 		}
 
@@ -1538,7 +1538,7 @@
 					}
 
 					&:before {
-						background: _palette(accent1, bg);
+						background: #990033;
 						color: _palette(accent1, fg-bold);
 						content: '\f0c9';
 						display: block;
