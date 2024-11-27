@@ -478,7 +478,7 @@
 			position: relative;
 
 			&:before {
-				background: _palette(border-bg);
+				background: #ffffff;
 				border-radius: _size(border-radius);
 				border: solid _size(border-width) _palette(border2);
 				content: '';
@@ -956,7 +956,7 @@
 				border-right: 0;
 
 				&:nth-child(2n + 1) {
-					background-color: _palette(border-bg);
+					background-color: #ffffff;
 				}
 			}
 		}

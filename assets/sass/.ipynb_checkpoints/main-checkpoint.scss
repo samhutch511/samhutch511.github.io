@@ -478,7 +478,7 @@
 			position: relative;
 
 			&:before {
-				background: _palette(border-bg);
+				background: #ffffff;
 				border-radius: _size(border-radius);
 				border: solid _size(border-width) _palette(border2);
 				content: '';
@@ -498,7 +498,7 @@
 			&:before {
 				background: #ffffff;
 				border-color: #ffffff;
-				color: _palette(accent2, fg-bold);
+				color: #ffffff;
 				content: '\f00c';
 			}
 		}
@@ -956,7 +956,7 @@
 				border-right: 0;
 
 				&:nth-child(2n + 1) {
-					background-color: _palette(border-bg);
+					background-color: #ffffff;
 				}
 			}
 		}
@@ -1025,7 +1025,7 @@
 		background-color: #ffffff;
 		border-radius: _size(border-radius);
 		border: 0;
-		color: _palette(accent2, fg-bold) !important;
+		color: #ffffff !important;
 		cursor: pointer;
 		display: inline-block;
 		font-weight: _font(weight-bold);
@@ -1038,7 +1038,7 @@
 
 		&:hover {
 			background-color: lighten(#ffffff, 5);
-			color: _palette(accent2, fg-bold) !important;
+			color: #ffffff !important;
 		}
 
 		&:active {
