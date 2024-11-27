@@ -498,7 +498,7 @@
 			&:before {
 				background: #ffffff;
 				border-color: #ffffff;
-				color: _palette(accent2, fg-bold);
+				color: #ffffff;
 				content: '\f00c';
 			}
 		}
@@ -1025,7 +1025,7 @@
 		background-color: #ffffff;
 		border-radius: _size(border-radius);
 		border: 0;
-		color: _palette(accent2, fg-bold) !important;
+		color: #ffffff !important;
 		cursor: pointer;
 		display: inline-block;
 		font-weight: _font(weight-bold);
@@ -1038,7 +1038,7 @@
 
 		&:hover {
 			background-color: lighten(#ffffff, 5);
-			color: _palette(accent2, fg-bold) !important;
+			color: #ffffff !important;
 		}
 
 		&:active {
