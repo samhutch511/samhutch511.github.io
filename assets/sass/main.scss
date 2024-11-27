@@ -496,8 +496,8 @@
 
 		&:checked + label {
 			&:before {
-				background: _palette(accent2, bg);
-				border-color: _palette(accent2, bg);
+				background: #ffffff;
+				border-color: #ffffff;
 				color: _palette(accent2, fg-bold);
 				content: '\f00c';
 			}
@@ -1022,7 +1022,7 @@
 	.button {
 		@include vendor('appearance', 'none');
 		@include vendor('transition', ('background-color #{_duration(transition)} ease-in-out', 'color #{_duration(transition)} ease-in-out'));
-		background-color: _palette(accent2, bg);
+		background-color: #ffffff;
 		border-radius: _size(border-radius);
 		border: 0;
 		color: _palette(accent2, fg-bold) !important;
@@ -1037,12 +1037,12 @@
 		white-space: nowrap;
 
 		&:hover {
-			background-color: lighten(_palette(accent2, bg), 5);
+			background-color: lighten(#ffffff, 5);
 			color: _palette(accent2, fg-bold) !important;
 		}
 
 		&:active {
-			background-color: darken(_palette(accent2, bg), 5);
+			background-color: darken(#ffffff, 5);
 		}
 
 		&.icon {
