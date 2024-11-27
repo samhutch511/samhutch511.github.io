@@ -131,7 +131,7 @@
 
 	a {
 		@include vendor('transition', ('color #{_duration(transition)} ease-in-out', 'border-color #{_duration(transition)} ease-in-out'));
-		border-bottom: solid 1px _palette(border2);
+		border-bottom: solid 1px #ffffff;
 		color: inherit;
 		text-decoration: none;
 
@@ -206,7 +206,7 @@
 
 	hr {
 		border: 0;
-		border-bottom: solid _size(border-width) _palette(border);
+		border-bottom: solid _size(border-width) #ffffff;
 		margin: _size(element-margin) 0;
 
 		&.major {
@@ -215,7 +215,7 @@
 	}
 
 	blockquote {
-		border-left: solid (_size(border-width) * 4) _palette(border2);
+		border-left: solid (_size(border-width) * 4) #ffffff;
 		font-style: italic;
 		margin: 0 0 _size(element-margin) 0;
 		padding: 0.5em 0 0.5em 2em;
@@ -403,7 +403,7 @@
 		@include vendor('appearance', 'none');
 		border-radius: _size(border-radius);
 		border: none;
-		border: solid _size(border-width) _palette(border2);
+		border: solid _size(border-width) #ffffff;
 		color: inherit;
 		display: block;
 		outline: 0;
@@ -421,7 +421,7 @@
 	}
 
 	select {
-		background-image: svg-url("<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'><path d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='#{_palette(border2)}' /></svg>");
+		background-image: svg-url("<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'><path d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='#{#ffffff}' /></svg>");
 		background-size: 1.25em;
 		background-repeat: no-repeat;
 		background-position: calc(100% - 1em) center;
@@ -480,7 +480,7 @@
 			&:before {
 				background: #ffffff;
 				border-radius: _size(border-radius);
-				border: solid _size(border-width) _palette(border2);
+				border: solid _size(border-width) #ffffff;
 				content: '';
 				display: inline-block;
 				font-size: 0.8em;
@@ -554,7 +554,7 @@
 
 	.box {
 		border-radius: _size(border-radius);
-		border: solid _size(border-width) _palette(border2);
+		border: solid _size(border-width) #ffffff;
 		margin-bottom: _size(element-margin);
 		padding: 1.5em;
 
@@ -773,7 +773,7 @@
 			padding-left: 0;
 
 			li {
-				border-top: solid _size(border-width) _palette(border);
+				border-top: solid _size(border-width) #ffffff;
 				padding: 0.5em 0;
 
 				&:first-child {
@@ -951,7 +951,7 @@
 
 		tbody {
 			tr {
-				border: solid _size(border-width) _palette(border);
+				border: solid _size(border-width) #ffffff;
 				border-left: 0;
 				border-right: 0;
 
@@ -974,11 +974,11 @@
 		}
 
 		thead {
-			border-bottom: solid (_size(border-width) * 2) _palette(border2);
+			border-bottom: solid (_size(border-width) * 2) #ffffff;
 		}
 
 		tfoot {
-			border-top: solid (_size(border-width) * 2) _palette(border2);
+			border-top: solid (_size(border-width) * 2) #ffffff;
 		}
 
 		&.alt {
@@ -987,7 +987,7 @@
 			tbody {
 				tr {
 					td {
-						border: solid _size(border-width) _palette(border2);
+						border: solid _size(border-width) #ffffff;
 						border-left-width: 0;
 						border-top-width: 0;
 
@@ -1067,7 +1067,7 @@
 
 		&.alt {
 			background-color: transparent;
-			box-shadow: inset 0 0 0 _size(border-width) _palette(border2);
+			box-shadow: inset 0 0 0 _size(border-width) #ffffff;
 			color: _palette(fg-bold) !important;
 
 			&:hover {
@@ -1113,7 +1113,7 @@
 
 	.features {
 		article {
-			border-top: solid (_size(border-width) * 1.5) _palette(border);
+			border-top: solid (_size(border-width) * 1.5) #ffffff;
 			margin-bottom: _size(element-margin);
 			padding-top: _size(element-margin);
 
@@ -1282,7 +1282,7 @@
 
 	#main {
 		> section {
-			border-top: solid (_size(border-width) * 3) _palette(border);
+			border-top: solid (_size(border-width) * 3) #ffffff;
 
 			> .container {
 				padding: 6em 0 4em 0;
