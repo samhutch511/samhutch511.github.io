@@ -364,3 +364,101 @@ h3 {
   text-align: center;
   padding: 1.5rem 0;
 }
+
+/* =============================================
+   RESPONSIVE: ≤ 1024px
+   main.js breakpoints: medium = 737–1024px, small = 481–736px.
+   Below 1024px: sidebar becomes a right-side... wait, it's LEFT.
+   jQuery Panel plugin: side = 'left', visibleClass = 'header-visible'.
+   ============================================= */
+
+@media screen and (max-width: 1024px) {
+
+  /* Show the JS-created title bar */
+  #titleBar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    background: #1e1e1e;
+    z-index: 200;
+    padding: 0 0.75rem;
+  }
+
+  /* .toggle is first in DOM; use order to put title left, toggle right */
+  #titleBar .toggle {
+    order: 2;
+    display: block;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* Three-line hamburger icon via pseudo-element + box-shadow */
+  #titleBar .toggle::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 2px;
+    background: #ffffff;
+    box-shadow: 0 -6px 0 #ffffff, 0 6px 0 #ffffff;
+  }
+
+  #titleBar .title {
+    order: 1;
+    flex: 1;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Sidebar off-screen to the left on mobile; jQuery Panel slides it in */
+  #header {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    right: auto;
+    width: 300px;
+    height: 100vh;
+    z-index: 300;
+    transition: left 0.3s ease;
+  }
+
+  /* Panel open: body.header-visible added by jQuery Panel plugin */
+  body.header-visible #header {
+    left: 0;
+  }
+
+  /* Dim overlay behind open panel */
+  body.header-visible::before {
+    content: '';
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 250;
+  }
+
+  /* Full-width content, offset for title bar height */
+  #wrapper {
+    margin-left: 0;
+    padding-top: 44px;
+  }
+
+  .container {
+    padding: 2rem 1.25rem;
+  }
+
+}
