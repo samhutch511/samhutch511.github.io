@@ -216,12 +216,34 @@ body.is-preload * {
   display: none;
 }
 
+/* Wire up HTML5 UP's .icon.brands/.solid pattern to FontAwesome font */
+.icon::before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.icon.solid::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+.icon.brands::before {
+  font-family: 'Font Awesome 5 Brands';
+  font-weight: 400;
+}
+
 /* =============================================
    SHARED: CONTAINER & SECTION HEADINGS
    ============================================= */
 
 .container {
-  padding: 3rem 2.5rem;
+  padding: 3rem 1.25rem;
   max-width: 860px;
   margin: 0 auto;
 }
@@ -304,8 +326,8 @@ h3 {
 /* Thumbnail */
 .features article a.image {
   display: block;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
   border-radius: 4px;
   overflow: hidden;
@@ -313,8 +335,8 @@ h3 {
 
 .features article a.image img {
   display: block;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   transition: opacity 0.2s;
 }
