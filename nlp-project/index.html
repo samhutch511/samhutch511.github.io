@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EEGym — Sam Hutchinson</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="chart-data.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: #f0f2f5; color: #222; }
+    a { color: #4a7fcb; }
+
+    .page { background: #fff; max-width: 900px; margin: 0 auto;
+            padding: 0 0 48px; box-shadow: 0 2px 20px rgba(0,0,0,.08); }
+
+    /* Back nav */
+    .back-nav { padding: 12px 36px; border-bottom: 1px solid #eee;
+                font-size: 13px; color: #888; }
+    .back-nav a { text-decoration: none; }
+
+    /* Header */
+    .paper-header { padding: 32px 36px 24px; border-bottom: 1px solid #eee; }
+    .paper-header h1 { margin: 0 0 8px; font-size: 22px; font-weight: 700;
+                       line-height: 1.35; color: #1a1a2e; }
+    .authors { font-size: 14px; color: #555; margin-bottom: 4px; }
+    .venue   { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .pdf-btn { display: inline-block; padding: 6px 20px; background: #1a1a2e;
+               color: #fff; text-decoration: none; border-radius: 4px;
+               font-size: 13px; font-weight: 600; }
+    .pdf-btn:hover { background: #2d2d4e; color: #fff; }
+
+    /* Two-col intro */
+    .intro-grid { display: grid; grid-template-columns: 1fr 250px; gap: 28px;
+                  padding: 28px 36px; border-bottom: 1px solid #eee; }
+    .abstract-col h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+                       letter-spacing: .07em; color: #888; }
+    .abstract-col p  { font-size: 14px; line-height: 1.7; color: #333; margin: 0 0 14px; }
+    .findings-box { background: #f8f9fa; border-left: 3px solid #4a7fcb;
+                    padding: 12px 16px; border-radius: 0 6px 6px 0; }
+    .findings-box h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase;
+                       letter-spacing: .07em; color: #4a7fcb; }
+    .findings-box ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.8; color: #333; }
+
+    .downloads-col h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+                        letter-spacing: .07em; color: #888; }
+    .dl-group { margin-bottom: 12px; }
+    .dl-group-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+                      color: #aaa; margin-bottom: 5px; }
+    .dl-item { display: block; background: #f8f9fa; border: 1px solid #e5e5e5;
+               border-radius: 6px; padding: 8px 12px; margin-bottom: 6px;
+               text-decoration: none; color: inherit; transition: border-color .15s; }
+    .dl-item:hover { border-color: #4a7fcb; }
+    .dl-name { font-family: monospace; font-size: 11px; font-weight: 600; color: #1a1a2e; }
+    .dl-desc { font-size: 11px; color: #888; margin-top: 2px; }
+
+    /* Figure sections */
+    .figure-section { padding: 28px 36px; border-bottom: 1px solid #eee; }
+    .figure-section h2 { margin: 0 0 4px; font-size: 16px; font-weight: 700; color: #1a1a2e; }
+    .fig-caption { font-size: 13px; color: #666; margin: 0 0 16px; line-height: 1.55; }
+
+    /* Tabs (Figure 1) */
+    .tabs { display: flex; border-bottom: 2px solid #e5e5e5; margin-bottom: 16px;
+            overflow-x: auto; }
+    .tab { padding: 8px 16px; font-size: 13px; cursor: pointer; color: #888; white-space: nowrap;
+           border-bottom: 2px solid transparent; margin-bottom: -2px; background: none;
+           border-top: none; border-left: none; border-right: none; font-family: inherit; }
+    .tab:hover { color: #555; }
+    .tab.active { color: #4a7fcb; border-bottom-color: #4a7fcb; font-weight: 600; }
+
+    /* Footer */
+    .page-footer { padding: 20px 36px 0; }
+    .page-footer p { font-size: 13px; color: #aaa; margin: 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="back-nav">
+    <a href="/">← samhutch511.github.io</a>
+  </div>
+
+  <div class="paper-header">
+    <h1>EEGym: a novel benchmark for comparing language model representations and human N400 responses</h1>
+    <div class="authors">Sam Hutchinson &nbsp;·&nbsp; Jenny Baek &nbsp;·&nbsp; Ali Cy</div>
+    <div class="venue">MIT 6.8610 Grad NLP</div>
+    <a class="pdf-btn" href="../nlp_group_project.pdf" download>PDF</a>
+  </div>
+
+  <div class="intro-grid">
+    <div class="abstract-col">
+      <h3>Abstract</h3>
+      <p>We present EEGym, a standardized benchmark aggregating N400 ERP data from three independent
+         labs (~46k trials across 98 subjects). We compare representations from GPT-2, Pythia, Qwen3,
+         and a Sentence Gestalt model on their ability to predict human neural responses to language.</p>
+      <div class="findings-box">
+        <h4>Key findings</h4>
+        <ul>
+          <li>LLM surprisal strongly predicts N400, especially from the final layer and mid-to-late layers</li>
+          <li>Pre-trained base models outperform instruction-tuned models</li>
+          <li>Predictivity scales with model size</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="downloads-col">
+      <h3>Downloads</h3>
+      <div class="dl-group">
+        <div class="dl-group-label">Data</div>
+        <a class="dl-item" href="../nlp-group-project-main/combined_clean_n400.csv" download>
+          <div class="dl-name">combined_clean_n400.csv</div>
+          <div class="dl-desc">N400 amplitudes · 98 subjects · 46k trials</div>
+        </a>
+        <a class="dl-item" href="../nlp-group-project-main/stims_for_modeling.csv" download>
+          <div class="dl-name">stims_for_modeling.csv</div>
+          <div class="dl-desc">Sentences + critical words for modeling</div>
+        </a>
+      </div>
+      <div class="dl-group">
+        <div class="dl-group-label">Notebooks</div>
+        <a class="dl-item" href="../nlp-group-project-main/pipeline.ipynb" download>
+          <div class="dl-name">pipeline.ipynb</div>
+          <div class="dl-desc">Main analysis pipeline</div>
+        </a>
+        <a class="dl-item" href="../nlp-group-project-main/lopopolo_pipeline.ipynb" download>
+          <div class="dl-name">lopopolo_pipeline.ipynb</div>
+          <div class="dl-desc">Sentence Gestalt model pipeline</div>
+        </a>
+        <a class="dl-item" href="../nlp-group-project-main/final_plots.ipynb" download>
+          <div class="dl-name">final_plots.ipynb</div>
+          <div class="dl-desc">Figure reproduction</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Figure sections added in Task 3 & 4 -->
+
+  <div class="page-footer">
+    <p>Correspondence: <a href="mailto:samhutch@mit.edu">samhutch@mit.edu</a></p>
+  </div>
+
+</div>
+</body>
+</html>
