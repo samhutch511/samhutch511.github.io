@@ -215,3 +215,150 @@ body.is-preload * {
 .icons li a .label {
   display: none;
 }
+
+/* =============================================
+   SHARED: CONTAINER & SECTION HEADINGS
+   ============================================= */
+
+.container {
+  padding: 3rem 2.5rem;
+  max-width: 860px;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e1e1e;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid #c0392b;
+  margin-bottom: 1.5rem;
+}
+
+/* =============================================
+   ABOUT: BANNER IMAGE
+   HTML: <div class="image main" data-position="center"><img …></div>
+   data-position is used by main.js as object-position fallback for old browsers.
+   ============================================= */
+
+.image.main {
+  margin: 0;
+  line-height: 0;
+}
+
+.image.main img {
+  display: block;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* =============================================
+   ABOUT: BIO
+   HTML: .container > header.major > h2 + p, then prose <p> tags
+   ============================================= */
+
+.container header.major {
+  margin-bottom: 1.75rem;
+}
+
+.container header.major h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin-bottom: 0.5rem;
+}
+
+.container header.major > p {
+  font-size: 0.95rem;
+  color: #666666;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #c0392b;
+  margin-bottom: 0;
+}
+
+/* =============================================
+   PUBLICATIONS & PROJECTS: IMAGE + CARD
+   HTML: .features > article > a.image + .inner > h4 + p
+   ============================================= */
+
+.features {
+  display: flex;
+  flex-direction: column;
+}
+
+.features article {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.features article:last-child {
+  border-bottom: none;
+}
+
+/* Thumbnail */
+.features article a.image {
+  display: block;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.features article a.image img {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  transition: opacity 0.2s;
+}
+
+.features article a.image:hover img {
+  opacity: 0.8;
+}
+
+/* Title */
+.features article .inner h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+/* Citation text — italic, publications section only */
+#publications .features article .inner p {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #555555;
+  line-height: 1.55;
+}
+
+/* Description text — not italic, projects section */
+#other .features article .inner p {
+  font-size: 0.85rem;
+  color: #555555;
+  line-height: 1.55;
+}
+
+/* =============================================
+   MAIN PAGE FOOTER
+   HTML: section#footer > .container > ul.copyright
+   ============================================= */
+
+#footer {
+  background: #f7f7f7;
+  border-top: 1px solid #e8e8e8;
+}
+
+#footer .copyright {
+  list-style: none;
+  font-size: 0.8rem;
+  color: #888888;
+  text-align: center;
+  padding: 1.5rem 0;
+}
