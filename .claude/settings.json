@@ -44,7 +44,8 @@
       "Bash(/usr/bin/python3 -m pytest tests/test_prepare_chart_data.py -v)",
       "Bash(which python3 *)",
       "Read(//opt/homebrew/**)",
-      "Bash(/opt/homebrew/bin/pytest tests/test_prepare_chart_data.py -v)"
+      "Bash(/opt/homebrew/bin/pytest tests/test_prepare_chart_data.py -v)",
+      "Bash(git push *)"
     ]
   }
 }
