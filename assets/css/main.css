@@ -243,7 +243,7 @@ body.is-preload * {
    ============================================= */
 
 .container {
-  padding: 2.5rem 0.5rem;
+  padding: 2rem 0;
   max-width: 860px;
   margin: 0 auto;
 }
@@ -384,7 +384,7 @@ h3 {
   font-size: 0.8rem;
   color: #888888;
   text-align: center;
-  padding: 1.5rem 0;
+  padding: 0.4rem 0;
 }
 
 /* =============================================
