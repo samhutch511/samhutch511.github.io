@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+:root {
+  --sidebar-width: 280px;
+}
+
 html {
   font-size: 16px;
 }
@@ -52,7 +56,7 @@ body.is-preload * {
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: var(--sidebar-width);
   height: 100vh;
   background: #1e1e1e;
   color: #ffffff;
@@ -64,7 +68,8 @@ body.is-preload * {
 }
 
 #wrapper {
-  margin-left: 280px;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
 }
 
 /* =============================================
@@ -72,11 +77,11 @@ body.is-preload * {
    main.js adds .inactive on init; removes on scroll-enter.
    ============================================= */
 
-section {
+#main section {
   transition: opacity 0.4s ease;
 }
 
-section.inactive {
+#main section.inactive {
   opacity: 0;
 }
 
