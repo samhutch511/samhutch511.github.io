@@ -147,6 +147,21 @@
     </div>
     <div id="fig1-chart"></div>
   </div>
+
+  <div class="figure-section">
+    <h2>Figure 2 — Layer-wise surprisal profile</h2>
+    <p class="fig-caption">ΔAIC as a function of relative transformer depth
+       (0&nbsp;= input layer, 1&nbsp;= last layer). Only GPT-2 and Pythia families
+       included (tuned-lens probes required). Click legend entries to toggle models.</p>
+    <div id="fig2-chart"></div>
+  </div>
+
+  <div class="figure-section">
+    <h2>Figure 3 — Effect of model scale</h2>
+    <p class="fig-caption">Last-layer surprisal predictivity (ΔAIC) as a function of
+       parameter count. Hover for model name and exact values.</p>
+    <div id="fig3-chart"></div>
+  </div>
   </main>
 
   <footer class="page-footer">
@@ -197,6 +212,63 @@
   });
 
   renderFig1("last_layer_surprisal");
+
+  // ── Figure 2 ──────────────────────────────────────────────────────────────
+  function renderFig2() {
+    const models = [...new Set(CHART_DATA.fig2.map(d => d.model))];
+    const traces = models.map(model => {
+      const rows = CHART_DATA.fig2
+        .filter(d => d.model === model)
+        .sort((a, b) => a.layer_pct - b.layer_pct);
+      const { label, family, color } = rows[0];
+      return {
+        type: "scatter", mode: "lines", name: label,
+        legendgroup: family,
+        x: rows.map(d => d.layer_pct),
+        y: rows.map(d => d.daic),
+        line: { color },
+        hovertemplate: `<b>${label}</b><br>Depth: %{x:.2f}<br>ΔAIC: %{y:.1f}<extra></extra>`,
+      };
+    });
+
+    Plotly.newPlot("fig2-chart", traces, {
+      xaxis: { title: "Relative layer depth (0 = input, 1 = last)", range: [0, 1] },
+      yaxis: { title: "ΔAIC vs. null" },
+      legend: { groupclick: "toggleitem" },
+      margin: { t: 10, b: 60, l: 60, r: 20 },
+      height: 360,
+      plot_bgcolor: "#fff",
+      paper_bgcolor: "#fff",
+    }, { responsive: true, displayModeBar: false });
+  }
+
+  // ── Figure 3 ──────────────────────────────────────────────────────────────
+  function renderFig3() {
+    const traces = FAMILY_ORDER.filter(f => f !== "Qwen3 Instruct").map(fam => {
+      const rows = CHART_DATA.fig3.filter(d => d.family === fam);
+      if (!rows.length) return null;
+      return {
+        type: "scatter", mode: "markers", name: fam,
+        x: rows.map(d => d.params_b),
+        y: rows.map(d => d.daic),
+        marker: { color: rows[0].color, size: 10 },
+        customdata: rows.map(d => d.label),
+        hovertemplate: "<b>%{customdata}</b><br>Params: %{x}B<br>ΔAIC: %{y:.1f}<extra></extra>",
+      };
+    }).filter(Boolean);
+
+    Plotly.newPlot("fig3-chart", traces, {
+      xaxis: { title: "Parameter count (billions)", type: "log" },
+      yaxis: { title: "ΔAIC vs. null" },
+      margin: { t: 10, b: 60, l: 60, r: 20 },
+      height: 320,
+      plot_bgcolor: "#fff",
+      paper_bgcolor: "#fff",
+    }, { responsive: true, displayModeBar: false });
+  }
+
+  renderFig2();
+  renderFig3();
 </script>
 </body>
 </html>
