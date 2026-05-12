@@ -223,6 +223,7 @@ body.is-preload * {
 .container {
   padding: 3rem 2.5rem;
   max-width: 860px;
+  margin: 0 auto;
 }
 
 h3 {
@@ -289,6 +290,7 @@ h3 {
 
 .features article {
   display: flex;
+  flex-direction: row;
   gap: 1.5rem;
   align-items: flex-start;
   padding: 1.25rem 0;
