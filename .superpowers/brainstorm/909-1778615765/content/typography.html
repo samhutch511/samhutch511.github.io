@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f5f5f5; font-size: 14px; color: #222; padding: 24px; }
+  h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #111; font-family: system-ui; }
+  .subtitle { color: #666; font-family: system-ui; margin-bottom: 20px; font-size: 13px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  .card {
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: #bbb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .card.selected { border-color: #c0392b; box-shadow: 0 0 0 3px rgba(192,57,43,0.15); }
+
+  .card-preview {
+    display: flex;
+    height: 320px;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Sidebar mock */
+  .mock-sidebar {
+    width: 30%;
+    background: #1e1e1e;
+    color: #fff;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .mock-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #c0392b; margin: 0 auto 4px;
+  }
+  .mock-sidebar .name { text-align: center; font-size: 10px; font-weight: 700; color: #fff; }
+  .mock-sidebar .role { text-align: center; font-size: 8px; color: #999; margin-bottom: 4px; }
+  .mock-sidebar .nav-item { font-size: 8.5px; color: #bbb; padding: 3px 5px; border-radius: 3px; }
+  .mock-sidebar .nav-item.active { background: rgba(192,57,43,0.25); color: #fff; }
+
+  /* Main content mock */
+  .mock-main {
+    flex: 1;
+    background: #fff;
+    overflow: hidden;
+  }
+  .mock-banner {
+    height: 60px;
+    background: linear-gradient(135deg, #2c2c2c, #555, #888, #555);
+  }
+  .mock-content {
+    padding: 12px;
+  }
+
+  /* Font-specific classes */
+  .font-source { font-family: 'Source Sans 3', sans-serif; }
+  .font-inter { font-family: 'Inter', sans-serif; }
+  .font-ibm { font-family: 'IBM Plex Sans', sans-serif; }
+
+  .section-heading { font-size: 15px; font-weight: 700; color: #1e1e1e; margin-bottom: 2px; }
+  .section-sub { font-size: 9px; color: #888; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid #c0392b; display: inline-block; }
+  .body-text { font-size: 9px; line-height: 1.55; color: #444; margin-bottom: 8px; }
+  .pub-title { font-size: 10px; font-weight: 600; color: #1e1e1e; margin-bottom: 2px; }
+  .pub-citation { font-size: 8px; color: #666; line-height: 1.4; font-style: italic; }
+
+  .card-label {
+    padding: 12px 14px;
+  }
+  .card-label h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; font-family: system-ui; }
+  .card-label p { font-size: 11px; color: #666; line-height: 1.5; font-family: system-ui; }
+
+  .letter-badge {
+    display: inline-block;
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 6px;
+    font-family: system-ui;
+  }
+
+  /* Selection indicator */
+  #indicator {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: #1e1e1e; color: #fff; padding: 8px 20px; border-radius: 20px;
+    font-size: 12px; font-family: system-ui; opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  #indicator.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<h1>Typography — Side by Side</h1>
+<p class="subtitle">Each preview shows the same content (about bio + one publication) in the charcoal/warm layout. Click to select.</p>
+
+<div class="cards">
+
+  <!-- Source Sans Pro (current) -->
+  <div class="card font-source" onclick="selectCard(this, 'source-sans')" id="card-source">
+    <div class="card-preview">
+      <div class="mock-sidebar font-source">
+        <div class="mock-avatar"></div>
+        <div class="name">Sam Hutchinson</div>
+        <div class="role">PhD Student · MIT BCS</div>
+        <div class="nav-item active">About</div>
+        <div class="nav-item">Publications</div>
+        <div class="nav-item">Projects</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-banner"></div>
+        <div class="mock-content font-source">
+          <div class="section-heading">About</div>
+          <div class="section-sub">Incoming PhD · MIT Brain &amp; Cognitive Sciences</div>
+          <p class="body-text">I want to understand what makes us such effective communicators, teachers, and learners, and how we develop rich theories about entities we cannot perceive. How do we represent abstract concepts like <em>electrons</em> or <em>inflation</em>?</p>
+          <div class="pub-title">An Efficient Multimodal fMRI Localizer</div>
+          <div class="pub-citation">Hutchinson, S., Marvi, A., Kamps, F. et al. Journal of Vision, 24(10), 668. 2024.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3><span class="letter-badge">A</span>Source Sans 3</h3>
+      <p>Current template font. Humanist, warm, slightly rounded. Familiar feel — nothing jarring about the switch, just a palette/layout refresh.</p>
+    </div>
+  </div>
+
+  <!-- Inter -->
+  <div class="card font-inter" onclick="selectCard(this, 'inter')" id="card-inter">
+    <div class="card-preview">
+      <div class="mock-sidebar font-inter">
+        <div class="mock-avatar"></div>
+        <div class="name">Sam Hutchinson</div>
+        <div class="role">PhD Student · MIT BCS</div>
+        <div class="nav-item active">About</div>
+        <div class="nav-item">Publications</div>
+        <div class="nav-item">Projects</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-banner"></div>
+        <div class="mock-content font-inter">
+          <div class="section-heading">About</div>
+          <div class="section-sub">Incoming PhD · MIT Brain &amp; Cognitive Sciences</div>
+          <p class="body-text">I want to understand what makes us such effective communicators, teachers, and learners, and how we develop rich theories about entities we cannot perceive. How do we represent abstract concepts like <em>electrons</em> or <em>inflation</em>?</p>
+          <div class="pub-title">An Efficient Multimodal fMRI Localizer</div>
+          <div class="pub-citation">Hutchinson, S., Marvi, A., Kamps, F. et al. Journal of Vision, 24(10), 668. 2024.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3><span class="letter-badge">B</span>Inter</h3>
+      <p>Geometric, highly legible, designed for screens. Very clean at small sizes. Modern and neutral — popular in tech and design. Slightly tighter than Source Sans.</p>
+    </div>
+  </div>
+
+  <!-- IBM Plex Sans -->
+  <div class="card font-ibm" onclick="selectCard(this, 'ibm-plex')" id="card-ibm">
+    <div class="card-preview">
+      <div class="mock-sidebar font-ibm">
+        <div class="mock-avatar"></div>
+        <div class="name">Sam Hutchinson</div>
+        <div class="role">PhD Student · MIT BCS</div>
+        <div class="nav-item active">About</div>
+        <div class="nav-item">Publications</div>
+        <div class="nav-item">Projects</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-banner"></div>
+        <div class="mock-content font-ibm">
+          <div class="section-heading">About</div>
+          <div class="section-sub">Incoming PhD · MIT Brain &amp; Cognitive Sciences</div>
+          <p class="body-text">I want to understand what makes us such effective communicators, teachers, and learners, and how we develop rich theories about entities we cannot perceive. How do we represent abstract concepts like <em>electrons</em> or <em>inflation</em>?</p>
+          <div class="pub-title">An Efficient Multimodal fMRI Localizer</div>
+          <div class="pub-citation">Hutchinson, S., Marvi, A., Kamps, F. et al. Journal of Vision, 24(10), 668. 2024.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3><span class="letter-badge">C</span>IBM Plex Sans</h3>
+      <p>Technical, precise, a little editorial. Distinctive letter shapes make it memorable. Strong italic. Feels academic and rigorous — suits a cognitive science / BCS page well.</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="indicator">Selected: <span id="indicator-text"></span></div>
+
+<script>
+  function selectCard(el, name) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    const labels = { 'source-sans': 'A — Source Sans 3', 'inter': 'B — Inter', 'ibm-plex': 'C — IBM Plex Sans' };
+    document.getElementById('indicator-text').textContent = labels[name];
+    document.getElementById('indicator').classList.add('visible');
+    // Record event
+    try {
+      fetch('/event', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ type: 'click', choice: name, text: labels[name], timestamp: Date.now() }) });
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

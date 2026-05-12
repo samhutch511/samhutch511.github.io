@@ -1,0 +1,109 @@
+<h2>About Section — Banner / Hero Treatment</h2>
+<p class="subtitle">The current site opens the About section with a large full-width banner photo. What should replace it?</p>
+
+<div class="cards">
+
+  <!-- Option A: Keep large banner photo -->
+  <div class="card" data-choice="keep-banner" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:200px;font-size:11px;border-radius:4px;overflow:hidden;border:1px solid #ddd;">
+        <div style="width:28%;background:#1e1e1e;padding:10px;display:flex;flex-direction:column;gap:5px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#c0392b;margin:0 auto 2px;"></div>
+          <div style="text-align:center;font-weight:bold;font-size:9px;color:#fff;">Sam Hutchinson</div>
+          <div style="height:1px;background:#333;margin:4px 0;"></div>
+          <div style="font-size:8px;color:#bbb;padding:2px 4px;">About</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Publications</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Projects</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <!-- Full-width banner image -->
+          <div style="height:60px;background:linear-gradient(135deg,#2c2c2c,#555,#888,#555);position:relative;">
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;">
+              <div style="font-size:9px;color:rgba(255,255,255,0.5);">banner.jpg</div>
+            </div>
+          </div>
+          <!-- Content below banner -->
+          <div style="flex:1;padding:8px;background:#fff;">
+            <div style="font-size:11px;font-weight:700;color:#1e1e1e;margin-bottom:3px;">Sam Hutchinson</div>
+            <div style="font-size:8px;color:#666;margin-bottom:5px;">Welcome to my webpage! Incoming PhD student at MIT BCS.</div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;margin-bottom:2px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:85%;margin-bottom:2px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:78%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Keep Banner Photo</h3>
+      <p>The large full-width photo stays as the visual intro to the About section. You'd swap in a more intentional photo (e.g. a nice landscape, campus shot, or abstract). Adds visual weight and personality up top.</p>
+    </div>
+  </div>
+
+  <!-- Option B: No banner, straight to bio -->
+  <div class="card" data-choice="no-banner" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:200px;font-size:11px;border-radius:4px;overflow:hidden;border:1px solid #ddd;">
+        <div style="width:28%;background:#1e1e1e;padding:10px;display:flex;flex-direction:column;gap:5px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#c0392b;margin:0 auto 2px;"></div>
+          <div style="text-align:center;font-weight:bold;font-size:9px;color:#fff;">Sam Hutchinson</div>
+          <div style="height:1px;background:#333;margin:4px 0;"></div>
+          <div style="font-size:8px;color:#bbb;padding:2px 4px;">About</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Publications</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Projects</div>
+        </div>
+        <div style="flex:1;background:#fff;padding:12px;">
+          <!-- Straight to bio, no banner -->
+          <div style="font-size:13px;font-weight:700;color:#1e1e1e;margin-bottom:2px;">About</div>
+          <div style="font-size:8px;color:#888;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #c0392b;display:inline-block;">PhD Student · MIT Brain &amp; Cognitive Sciences</div>
+          <div style="background:#f2f0ef;height:7px;border-radius:2px;margin-bottom:3px;"></div>
+          <div style="background:#f2f0ef;height:7px;border-radius:2px;width:90%;margin-bottom:3px;"></div>
+          <div style="background:#f2f0ef;height:7px;border-radius:2px;width:82%;margin-bottom:3px;"></div>
+          <div style="background:#f2f0ef;height:7px;border-radius:2px;width:88%;margin-bottom:3px;"></div>
+          <div style="background:#f2f0ef;height:7px;border-radius:2px;width:75%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — No Banner, Straight to Bio</h3>
+      <p>Content starts immediately: section heading, a red underline accent, then the bio paragraph. Clean and fast — the writing does the work, no photo required. Pairs well with the charcoal/warm palette.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Subtle gradient rule -->
+  <div class="card" data-choice="gradient-rule" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:200px;font-size:11px;border-radius:4px;overflow:hidden;border:1px solid #ddd;">
+        <div style="width:28%;background:#1e1e1e;padding:10px;display:flex;flex-direction:column;gap:5px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#c0392b;margin:0 auto 2px;"></div>
+          <div style="text-align:center;font-weight:bold;font-size:9px;color:#fff;">Sam Hutchinson</div>
+          <div style="height:1px;background:#333;margin:4px 0;"></div>
+          <div style="font-size:8px;color:#bbb;padding:2px 4px;">About</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Publications</div>
+          <div style="font-size:8px;color:#999;padding:2px 4px;">Projects</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <!-- Shallow gradient header band -->
+          <div style="height:30px;background:linear-gradient(to right, #1e1e1e, #2c2c2c);display:flex;align-items:center;padding:0 12px;">
+            <div style="font-size:11px;font-weight:700;color:#fff;letter-spacing:0.5px;">About</div>
+          </div>
+          <!-- Content -->
+          <div style="flex:1;background:#fff;padding:10px;">
+            <div style="font-size:8px;color:#888;margin-bottom:6px;">PhD Student · MIT Brain &amp; Cognitive Sciences</div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;margin-bottom:3px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:90%;margin-bottom:3px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:82%;margin-bottom:3px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:88%;margin-bottom:3px;"></div>
+            <div style="background:#f2f0ef;height:7px;border-radius:2px;width:75%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Gradient Section Header</h3>
+      <p>A shallow dark band (matching the sidebar color) acts as the section heading, giving a visual "bridge" from sidebar to content without a full photo. Subtle, structured, ties the sidebar and main panel together.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:1rem;">Check <strong>http://localhost:56182</strong> and reply in the terminal.</p>
