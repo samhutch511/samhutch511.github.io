@@ -25,9 +25,9 @@ def test_fig2_layer_pct_range():
     for row in read_fig2():
         assert 0.0 <= row["layer_pct"] <= 1.0
 
-def test_fig3_excludes_qwen3_instruct():
-    for row in read_fig3():
-        assert row["family"] != "Qwen3 Instruct"
+def test_fig3_includes_all_families():
+    families = {r["family"] for r in read_fig3()}
+    assert families == {"GPT-2", "Pythia", "Qwen3 Base", "Qwen3 Instruct"}
 
 def test_fig3_all_have_params():
     for row in read_fig3():

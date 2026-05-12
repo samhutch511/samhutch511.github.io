@@ -159,7 +159,7 @@
   <div class="figure-section">
     <h2>Figure 3 — Effect of model scale</h2>
     <p class="fig-caption">Last-layer surprisal predictivity (ΔAIC) as a function of
-       parameter count. Hover for model name and exact values.</p>
+       parameter count (log scale). Hover for model name and exact values.</p>
     <div id="fig3-chart"></div>
   </div>
   </main>
@@ -244,7 +244,7 @@
 
   // ── Figure 3 ──────────────────────────────────────────────────────────────
   function renderFig3() {
-    const traces = FAMILY_ORDER.filter(f => f !== "Qwen3 Instruct").map(fam => {
+    const traces = FAMILY_ORDER.map(fam => {
       const rows = CHART_DATA.fig3.filter(d => d.family === fam);
       if (!rows.length) return null;
       return {

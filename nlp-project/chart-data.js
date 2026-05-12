@@ -2749,12 +2749,28 @@ const CHART_DATA = {
       "daic": 201.92
     },
     {
+      "model": "qwen_qwen3_0.6b",
+      "label": "Qw3-0.6B",
+      "family": "Qwen3 Instruct",
+      "color": "#c77dff",
+      "params_b": 0.6,
+      "daic": 126.62
+    },
+    {
       "model": "qwen_qwen3_1.7b_base",
       "label": "Qw3-1.7B-b",
       "family": "Qwen3 Base",
       "color": "#7b2d8b",
       "params_b": 1.7,
       "daic": 225.34
+    },
+    {
+      "model": "qwen_qwen3_1.7b",
+      "label": "Qw3-1.7B",
+      "family": "Qwen3 Instruct",
+      "color": "#c77dff",
+      "params_b": 1.7,
+      "daic": 178.2
     },
     {
       "model": "qwen_qwen3_14b_base",
@@ -2765,6 +2781,14 @@ const CHART_DATA = {
       "daic": 225.24
     },
     {
+      "model": "qwen_qwen3_14b",
+      "label": "Qw3-14B",
+      "family": "Qwen3 Instruct",
+      "color": "#c77dff",
+      "params_b": 14.0,
+      "daic": 194.6
+    },
+    {
       "model": "qwen_qwen3_4b_base",
       "label": "Qw3-4B-b",
       "family": "Qwen3 Base",
@@ -2773,12 +2797,28 @@ const CHART_DATA = {
       "daic": 212.35
     },
     {
+      "model": "qwen_qwen3_4b",
+      "label": "Qw3-4B",
+      "family": "Qwen3 Instruct",
+      "color": "#c77dff",
+      "params_b": 4.0,
+      "daic": 187.09
+    },
+    {
       "model": "qwen_qwen3_8b_base",
       "label": "Qw3-8B-b",
       "family": "Qwen3 Base",
       "color": "#7b2d8b",
       "params_b": 8.0,
       "daic": 216.6
+    },
+    {
+      "model": "qwen_qwen3_8b",
+      "label": "Qw3-8B",
+      "family": "Qwen3 Instruct",
+      "color": "#c77dff",
+      "params_b": 8.0,
+      "daic": 184.87
     }
   ]
 };

@@ -46,6 +46,9 @@ PARAMS_B = {
     "qwen_qwen3_0.6b_base": 0.6,  "qwen_qwen3_1.7b_base": 1.7,
     "qwen_qwen3_4b_base":   4.0,  "qwen_qwen3_8b_base":   8.0,
     "qwen_qwen3_14b_base":  14.0,
+    "qwen_qwen3_0.6b": 0.6,  "qwen_qwen3_1.7b": 1.7,
+    "qwen_qwen3_4b":   4.0,  "qwen_qwen3_8b":   8.0,
+    "qwen_qwen3_14b":  14.0,
 }
 
 COLORS = {
