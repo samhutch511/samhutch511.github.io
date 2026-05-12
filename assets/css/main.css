@@ -368,7 +368,7 @@ h3 {
 /* =============================================
    RESPONSIVE: ≤ 1024px
    main.js breakpoints: medium = 737–1024px, small = 481–736px.
-   Below 1024px: sidebar becomes a right-side... wait, it's LEFT.
+   Below 1024px: sidebar slides in from the left as a panel.
    jQuery Panel plugin: side = 'left', visibleClass = 'header-visible'.
    ============================================= */
 
