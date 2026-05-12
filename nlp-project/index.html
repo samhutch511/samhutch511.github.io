@@ -136,7 +136,19 @@
     </div>
   </div>
 
-  <!-- Figure sections added in Task 3 & 4 -->
+  <div class="figure-section">
+    <h2>Figure 1 — Predictor comparison (ΔAIC vs. null model)</h2>
+    <p class="fig-caption">Higher ΔAIC = stronger prediction of N400 amplitude.
+       Significance stars shown on hover. Use tabs to switch between predictors.</p>
+    <div class="tabs">
+      <button class="tab active" data-predictor="last_layer_surprisal">Surprisal</button>
+      <button class="tab" data-predictor="cv_layer_surprisal">Layer-wise surprisal</button>
+      <button class="tab" data-predictor="shallow_surprisal">Shallow surprisal</button>
+      <button class="tab" data-predictor="lang_mae_z">Language-network update</button>
+      <button class="tab" data-predictor="su_sgm_z">SG update</button>
+    </div>
+    <div id="fig1-chart"></div>
+  </div>
   </main>
 
   <footer class="page-footer">
@@ -144,5 +156,47 @@
   </footer>
 
 </div>
+<script>
+  // ── Figure 1 ──────────────────────────────────────────────────────────────
+  const FAMILY_ORDER = ["GPT-2", "Pythia", "Qwen3 Base", "Qwen3 Instruct"];
+
+  function renderFig1(predictor) {
+    const rows = CHART_DATA.fig1.filter(d => d.predictor === predictor);
+    const traces = FAMILY_ORDER.map(fam => {
+      const r = rows.filter(d => d.family === fam);
+      if (!r.length) return null;
+      return {
+        type: "bar",
+        name: fam,
+        x: r.map(d => d.label),
+        y: r.map(d => d.daic),
+        marker: { color: r[0].color },
+        customdata: r.map(d => d.sig || "n.s."),
+        hovertemplate: "<b>%{x}</b><br>ΔAIC: %{y:.1f}<br>Sig: %{customdata}<extra></extra>",
+      };
+    }).filter(Boolean);
+
+    Plotly.react("fig1-chart", traces, {
+      xaxis: { title: "Model", tickangle: -35, automargin: true },
+      yaxis: { title: "ΔAIC vs. null" },
+      legend: { orientation: "h", y: -0.35 },
+      margin: { t: 10, b: 120, l: 60, r: 20 },
+      height: 360,
+      plot_bgcolor: "#fff",
+      paper_bgcolor: "#fff",
+    }, { responsive: true, displayModeBar: false });
+  }
+
+  document.querySelectorAll(".tab[data-predictor]").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab[data-predictor]")
+              .forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      renderFig1(tab.dataset.predictor);
+    });
+  });
+
+  renderFig1("last_layer_surprisal");
+</script>
 </body>
 </html>
