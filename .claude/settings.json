@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(pip3 show *)",
+      "Bash(/opt/homebrew/bin/python3 -c ' *)",
+      "Bash(/opt/homebrew/bin/python3 -c \"import sys; print\\(sys.path\\)\")",
+      "Bash(/opt/homebrew/bin/python3 -m pip install beautifulsoup4 --quiet)",
+      "Bash(/opt/homebrew/bin/python3 -c \"from bs4 import BeautifulSoup; print\\('bs4 OK'\\)\")",
+      "Bash(/opt/homebrew/bin/python3 -m pip install beautifulsoup4 --break-system-packages --quiet)",
+      "Read(//Users/samhutchinson/**)",
+      "Bash(bash /Users/samhutchinson/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/start-server.sh --project-dir /Users/samhutchinson/Documents/GitHub/samhutch511.github.io)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(brew install *)",
+      "Bash(pytest /Users/samhutchinson/Documents/GitHub/samhutch511.github.io/tests/test_prepare_chart_data.py -v)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io add scripts/prepare_chart_data.py tests/test_prepare_chart_data.py nlp-project/chart-data.js)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io commit -m ' *)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io status)",
+      "Bash(/opt/homebrew/bin/python3 -m pytest --version)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(/opt/homebrew/bin/python3.10 -m pytest tests/test_prepare_chart_data.py -v)",
+      "Bash(python3.11 -m pytest tests/test_prepare_chart_data.py -v)",
+      "Bash(which pytest *)",
+      "Read(//usr/local/bin/**)",
+      "Bash(/opt/homebrew/bin/pytest /Users/samhutchinson/Documents/GitHub/samhutch511.github.io/tests/test_prepare_chart_data.py -v)",
+      "Bash(python3.10 -c ' *)",
+      "Bash(open /Users/samhutchinson/Documents/GitHub/samhutch511.github.io/nlp-project/index.html)",
+      "Bash(git commit *)",
+      "Bash(curl -s --head \"https://cdn.plot.ly/plotly-2.35.2.min.js\")",
+      "Bash(curl -s \"https://cdn.plot.ly/plotly-2.35.2.min.js\")",
+      "Bash(node -e ' *)",
+      "Bash(awk 'NR>=724')"
+    ]
+  }
+}

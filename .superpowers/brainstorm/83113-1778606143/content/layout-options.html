@@ -1,0 +1,78 @@
+<h2>Page layout for the EEGym project page</h2>
+<p class="subtitle">Which overall structure feels right for nlp-project/index.html?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e;padding:12px;border-radius:6px;font-size:11px;color:#ccc;font-family:monospace">
+        <div style="background:#16213e;padding:6px 10px;border-radius:4px;margin-bottom:8px;color:#a0c4ff;font-size:10px">← samhutch511.github.io &nbsp;|&nbsp; EEGym</div>
+        <div style="background:#0f3460;padding:8px;border-radius:4px;margin-bottom:6px;text-align:center">
+          <div style="font-size:13px;font-weight:bold;color:#fff">EEGym</div>
+          <div style="font-size:9px;color:#a0c4ff">Sam Hutchinson · Jenny Baek · Ali Cy</div>
+          <div style="margin-top:4px;font-size:9px;color:#ccc">[ PDF ] &nbsp; [ GitHub ] &nbsp; [ Data ]</div>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #333;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Abstract + key findings paragraph</div>
+        <div style="background:#1a1a2e;border:1px solid #333;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Figure 1 — Interactive bar chart (ΔAIC by predictor)</div>
+        <div style="background:#1a1a2e;border:1px solid #333;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Figure 2 — Interactive line chart (layer depth profile)</div>
+        <div style="background:#1a1a2e;border:1px solid #333;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Figure 3 — Interactive scale chart</div>
+        <div style="background:#1a1a2e;border:1px solid #333;padding:6px;border-radius:4px;font-size:9px">Downloads: CSVs · Notebooks · PDF</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Dark, matches your site</h3>
+      <p>Single-column, dark theme matching your existing portfolio. Nav breadcrumb back to main site at top. All content flows top-to-bottom.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f8f9fa;padding:12px;border-radius:6px;font-size:11px;color:#333;font-family:monospace">
+        <div style="background:#fff;padding:6px 10px;border-radius:4px;margin-bottom:8px;color:#555;font-size:10px;border:1px solid #ddd">← Back to samhutch511.github.io</div>
+        <div style="padding:6px;margin-bottom:6px;text-align:center">
+          <div style="font-size:13px;font-weight:bold;color:#222">EEGym: a novel benchmark for comparing LLM representations and human N400 responses</div>
+          <div style="font-size:9px;color:#666;margin-top:2px">Sam Hutchinson · Jenny Baek · Ali Cy &nbsp;|&nbsp; MIT 6.8610 &nbsp;|&nbsp; ICML 2026</div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px">
+          <div style="flex:1;background:#e9ecef;padding:5px;border-radius:4px;font-size:9px">Abstract + key findings</div>
+          <div style="flex:1;background:#e9ecef;padding:5px;border-radius:4px;font-size:9px">Downloads &amp; Links</div>
+        </div>
+        <div style="background:#fff;border:1px solid #ddd;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Figure 1 (full width)</div>
+        <div style="background:#fff;border:1px solid #ddd;padding:6px;border-radius:4px;margin-bottom:4px;font-size:9px">Figure 2 (full width)</div>
+        <div style="background:#fff;border:1px solid #ddd;padding:6px;border-radius:4px;font-size:9px">Figure 3 (full width)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Clean light academic style</h3>
+      <p>White background, paper-like typography. Abstract and downloads side-by-side at top, then figures below. Feels like an arXiv landing page.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f8f9fa;padding:12px;border-radius:6px;font-size:11px;font-family:monospace;display:flex;gap:8px">
+        <div style="width:80px;flex-shrink:0;background:#1a1a2e;padding:6px;border-radius:4px;color:#ccc;font-size:9px">
+          <div style="color:#a0c4ff;font-weight:bold;margin-bottom:6px">Contents</div>
+          <div style="margin-bottom:3px">Overview</div>
+          <div style="margin-bottom:3px">Figure 1</div>
+          <div style="margin-bottom:3px">Figure 2</div>
+          <div style="margin-bottom:3px">Figure 3</div>
+          <div>Downloads</div>
+        </div>
+        <div style="flex:1">
+          <div style="background:#fff;border:1px solid #ddd;padding:5px;border-radius:4px;margin-bottom:4px;font-size:9px;color:#333">
+            <b>EEGym</b><br/>
+            <span style="color:#666">Abstract + key findings</span>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd;padding:5px;border-radius:4px;margin-bottom:4px;font-size:9px;color:#333">Figure 1: ΔAIC bar charts</div>
+          <div style="background:#fff;border:1px solid #ddd;padding:5px;border-radius:4px;font-size:9px;color:#333">Figure 2: Layer depth profile</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Light with sticky sidebar nav</h3>
+      <p>Dark left nav (matches your portfolio sidebar style) with a light content area. Sticky "table of contents" lets you jump between figures.</p>
+    </div>
+  </div>
+
+</div>

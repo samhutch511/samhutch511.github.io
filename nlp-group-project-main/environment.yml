@@ -1,0 +1,30 @@
+name: nlp-n400
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  # PyTorch with CUDA 12.4 runtime (compatible with driver 12.x–13.x)
+  - pytorch>=2.4
+  - pytorch-cuda=12.4
+  # Scientific stack via conda to avoid pip/conda ABI conflicts with PyTorch
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - tqdm
+  - pip:
+    - transformers
+    - accelerate        # required by transformers for device_map and optimised loading
+    - huggingface_hub
+    - tuned-lens
+    - editdistance      # character-level Levenshtein distance for Li & Futrell (2024) shallow surprisal
+    - wordfreq          # word frequency estimates (Zipf scale) for LME controls
+    - nltk              # English word corpus for Coltheart's N orthographic neighborhood size
+    - ipykernel         # register the env as a Jupyter kernel
+    - jupyter
+    - ipywidgets        # required for tqdm progress bars in Jupyter
+    - seaborn           # publication-quality plot styling and faceting

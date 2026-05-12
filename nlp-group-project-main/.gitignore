@@ -1,0 +1,9 @@
+.DS_Store
+papers/
+.context/compound-engineering/
+docs/plans/
+.huggingface_cache/
+outputs/
+lme_data/
+lopopolo_model/models/
+**/__pycache__/

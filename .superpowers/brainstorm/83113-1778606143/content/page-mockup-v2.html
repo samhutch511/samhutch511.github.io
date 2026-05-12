@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>EEGym Page Mockup v2</title>
+<style>
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #222; }
+  .browser-bar { background: #ddd; padding: 8px 14px; font-size: 11px; color: #555; border-bottom: 1px solid #ccc; display: flex; align-items: center; gap: 8px; }
+  .browser-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .browser-bar .url { background: white; padding: 3px 10px; border-radius: 10px; font-size: 11px; color: #555; flex: 1; max-width: 320px; border: 1px solid #bbb; }
+  .page { background: white; max-width: 860px; margin: 0 auto; min-height: 90vh; padding: 0 0 40px; box-shadow: 0 2px 20px rgba(0,0,0,.1); }
+
+  .back-nav { padding: 12px 32px; border-bottom: 1px solid #eee; font-size: 12px; color: #888; }
+  .back-nav a { color: #4a7fcb; text-decoration: none; }
+
+  .paper-header { padding: 28px 32px 20px; border-bottom: 1px solid #eee; }
+  .paper-header h1 { margin: 0 0 6px; font-size: 20px; font-weight: 700; line-height: 1.35; color: #1a1a2e; }
+  .authors { font-size: 13px; color: #555; margin-bottom: 4px; }
+  .venue { font-size: 12px; color: #888; margin-bottom: 14px; }
+  .link-buttons { display: flex; gap: 8px; }
+  .link-btn { padding: 5px 18px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1.5px solid; cursor: pointer; background: #1a1a2e; color: white; border-color: #1a1a2e; }
+
+  .intro-grid { display: grid; grid-template-columns: 1fr 240px; gap: 24px; padding: 24px 32px; border-bottom: 1px solid #eee; }
+  .abstract-block h3 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #888; }
+  .abstract-block p { font-size: 13px; line-height: 1.7; color: #333; margin: 0 0 12px; }
+  .findings-box { background: #f8f9fa; border-left: 3px solid #4a7fcb; padding: 10px 14px; border-radius: 0 6px 6px 0; }
+  .findings-box h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #4a7fcb; }
+  .findings-box ul { margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.7; color: #333; }
+
+  .downloads-col h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #888; }
+  .dl-group-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: #aaa; margin: 10px 0 5px; }
+  .dl-item { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 7px 11px; margin-bottom: 6px; font-size: 12px; }
+  .dl-item .dl-name { font-weight: 600; color: #1a1a2e; font-family: monospace; font-size: 11px; }
+  .dl-item .dl-desc { color: #888; font-size: 11px; margin-top: 1px; }
+
+  .figure-section { padding: 24px 32px; border-bottom: 1px solid #eee; }
+  .figure-section h2 { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #1a1a2e; }
+  .figure-caption { font-size: 12px; color: #666; margin: 0 0 14px; line-height: 1.5; }
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 14px; }
+  .tab { padding: 7px 14px; font-size: 12px; cursor: pointer; color: #888; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+  .tab.active { color: #4a7fcb; border-bottom-color: #4a7fcb; font-weight: 600; }
+  .chart-placeholder { background: linear-gradient(135deg, #f0f4ff 0%, #e8edf8 100%); border: 1px solid #d0d8ef; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; color: #6b82b0; font-size: 12px; gap: 6px; }
+  .chart-placeholder .chart-icon { font-size: 28px; }
+  .chart-placeholder .chart-label { font-weight: 600; }
+  .chart-placeholder .chart-sub { font-size: 11px; color: #9baac8; }
+
+  .page-footer { padding: 20px 32px 0; }
+  .page-footer p { font-size: 12px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<div class="browser-bar">
+  <div class="dot" style="background:#ff5f57"></div>
+  <div class="dot" style="background:#febc2e"></div>
+  <div class="dot" style="background:#28c840"></div>
+  <div class="url">samhutch511.github.io/nlp-project/</div>
+</div>
+
+<div class="page">
+
+  <div class="back-nav"><a href="#">← samhutch511.github.io</a></div>
+
+  <div class="paper-header">
+    <h1>EEGym: a novel benchmark for comparing language model representations and human N400 responses</h1>
+    <div class="authors">Sam Hutchinson &nbsp;·&nbsp; Jenny Baek &nbsp;·&nbsp; Ali Cy</div>
+    <div class="venue">MIT 6.8610 Grad NLP</div>
+    <div class="link-buttons">
+      <button class="link-btn">PDF</button>
+    </div>
+  </div>
+
+  <div class="intro-grid">
+    <div class="abstract-block">
+      <h3>Abstract</h3>
+      <p>We present EEGym, a standardized benchmark aggregating N400 ERP data from three independent labs (~46k trials). We compare representations from GPT-2, Pythia, Qwen3, and a Sentence Gestalt model on their ability to predict human neural responses to language.</p>
+      <div class="findings-box">
+        <h4>Key findings</h4>
+        <ul>
+          <li>LLM surprisal strongly predicts N400 (ΔAIC &gt; 150)</li>
+          <li>Pre-trained base models outperform instruction-tuned</li>
+          <li>Predictivity scales with model size</li>
+          <li>State-update metrics do not predict N400</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="downloads-col">
+      <h3>Downloads</h3>
+      <div class="dl-group-label">Data</div>
+      <div class="dl-item">
+        <div class="dl-name">combined_clean_n400.csv</div>
+        <div class="dl-desc">N400 amplitudes · 98 subjects · 46k trials</div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-name">stims_for_modeling.csv</div>
+        <div class="dl-desc">Sentences + critical words for modeling</div>
+      </div>
+      <div class="dl-group-label">Notebooks</div>
+      <div class="dl-item">
+        <div class="dl-name">pipeline.ipynb</div>
+        <div class="dl-desc">Main analysis pipeline</div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-name">lopopolo_pipeline.ipynb</div>
+        <div class="dl-desc">Sentence Gestalt model pipeline</div>
+      </div>
+      <div class="dl-item">
+        <div class="dl-name">final_plots.ipynb</div>
+        <div class="dl-desc">Figure reproduction</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="figure-section">
+    <h2>Figure 1 — Predictor comparison (ΔAIC vs. null model)</h2>
+    <p class="figure-caption">Higher ΔAIC = stronger prediction of N400 amplitude. Significance stars shown on hover. Use tabs to switch between predictors.</p>
+    <div class="tabs">
+      <div class="tab active">Surprisal</div>
+      <div class="tab">Layer-wise surprisal</div>
+      <div class="tab">Shallow surprisal</div>
+      <div class="tab">Language-network update</div>
+      <div class="tab">SG update</div>
+    </div>
+    <div class="chart-placeholder">
+      <div class="chart-icon">📊</div>
+      <div class="chart-label">Plotly bar chart — 18 models, colored by family</div>
+      <div class="chart-sub">GPT-2 (blue) · Pythia (red) · Qwen3 base (purple) · Qwen3 instruct (lavender)</div>
+    </div>
+  </div>
+
+  <div class="figure-section">
+    <h2>Figure 2 — Layer-wise surprisal profile</h2>
+    <p class="figure-caption">ΔAIC as a function of relative transformer depth (0 = input, 1 = last layer). Click legend entries to toggle model families.</p>
+    <div class="chart-placeholder">
+      <div class="chart-icon">📈</div>
+      <div class="chart-label">Plotly line chart — ΔAIC vs. relative layer depth</div>
+      <div class="chart-sub">One line per model · hover for exact values · legend toggles families</div>
+    </div>
+  </div>
+
+  <div class="figure-section">
+    <h2>Figure 3 — Effect of model scale</h2>
+    <p class="figure-caption">Surprisal predictivity (ΔAIC) as a function of model parameter count. Hover for model name and exact values.</p>
+    <div class="chart-placeholder">
+      <div class="chart-icon">🔵</div>
+      <div class="chart-label">Plotly scatter — ΔAIC vs. parameters (log scale)</div>
+      <div class="chart-sub">GPT-2 · Pythia · Qwen3-base · colored by family</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <p>Correspondence: samhutch@mit.edu</p>
+  </div>
+
+</div>
+</body>
+</html>
