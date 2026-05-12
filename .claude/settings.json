@@ -30,7 +30,21 @@
       "Bash(curl -s --head \"https://cdn.plot.ly/plotly-2.35.2.min.js\")",
       "Bash(curl -s \"https://cdn.plot.ly/plotly-2.35.2.min.js\")",
       "Bash(node -e ' *)",
-      "Bash(awk 'NR>=724')"
+      "Bash(awk 'NR>=724')",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io ls-files nlp-group-project-main/combined_clean_n400.csv nlp-group-project-main/stims_for_modeling.csv nlp-group-project-main/pipeline.ipynb nlp-group-project-main/lopopolo_pipeline.ipynb nlp-group-project-main/final_plots.ipynb)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io check-attr -a nlp-group-project-main/combined_clean_n400.csv)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io log --oneline nlp-group-project-main/combined_clean_n400.csv)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io log --oneline -8)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io remote -v)",
+      "Bash(awk -F',' '{print $1, $2}')",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io log --oneline -3)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io log --oneline origin/main -3)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io show eb920d9 --stat)",
+      "Bash(git -C /Users/samhutchinson/Documents/GitHub/samhutch511.github.io log --format=\"%H %ai %s\" -10)",
+      "Bash(/usr/bin/python3 -m pytest tests/test_prepare_chart_data.py -v)",
+      "Bash(which python3 *)",
+      "Read(//opt/homebrew/**)",
+      "Bash(/opt/homebrew/bin/pytest tests/test_prepare_chart_data.py -v)"
     ]
   }
 }
