@@ -243,7 +243,7 @@ body.is-preload * {
    ============================================= */
 
 .container {
-  padding: 3rem 1.25rem;
+  padding: 2.5rem 0.5rem;
   max-width: 860px;
   margin: 0 auto;
 }
@@ -326,8 +326,8 @@ h3 {
 /* Thumbnail */
 .features article a.image {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   flex-shrink: 0;
   border-radius: 4px;
   overflow: hidden;
@@ -335,8 +335,8 @@ h3 {
 
 .features article a.image img {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
   transition: opacity 0.2s;
 }
