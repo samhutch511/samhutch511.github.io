@@ -117,7 +117,7 @@
     then run <code>git push origin main</code> in your terminal.
   </span>
   <span id="editor-status"></span>
-  <button id="editor-save-btn" onclick="saveAndCommit()">Save &amp; Commit</button>
+  <button id="editor-save-btn" onclick="saveAndCommit()" disabled>Save &amp; Commit</button>
 </div>
 
 <!-- URL edit popup -->
@@ -169,6 +169,7 @@ async function loadSite() {
     document.body.insertBefore(toolbar, document.body.firstChild);
 
     activateEditing();
+    document.getElementById('editor-save-btn').disabled = false;
     setStatus('');
   } catch (err) {
     setStatus('Failed to load site: ' + err.message, 'error');
@@ -350,6 +351,11 @@ function serialize() {
     img.setAttribute('src', img.getAttribute('src').split('?')[0]);
   });
 
+  // Strip runtime scroll-state classes injected by main.js
+  clone.querySelectorAll('.active, .active-locked, .inactive').forEach(el => {
+    el.classList.remove('active', 'active-locked', 'inactive');
+  });
+
   // Restore original body class
   clone.setAttribute('class', 'is-preload');
 
@@ -366,6 +372,7 @@ async function saveAndCommit() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ html: serialize() }),
     });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     if (json.ok) {
       setStatus(`Saved ✓ ${json.hash}`, 'saved');
