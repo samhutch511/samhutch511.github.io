@@ -102,7 +102,7 @@
      box-shadow:0 4px 16px rgba(0,0,0,0.15);font-family:'IBM Plex Sans',sans-serif;
      font-size:0.82rem;min-width:320px;">
   <div style="color:#777;margin-bottom:0.4rem;font-size:0.72rem;font-weight:600;letter-spacing:0.05em">EDIT URL</div>
-  <input id="url-popup-input" type="url" autocomplete="off"
+  <input id="url-popup-input" type="text" autocomplete="off"
     style="width:100%;border:1px solid #ccc;border-radius:4px;padding:0.3rem 0.5rem;
            font-family:inherit;font-size:0.82rem;box-sizing:border-box;">
   <div style="display:flex;gap:0.5rem;margin-top:0.5rem;justify-content:flex-end">
@@ -191,16 +191,23 @@ function stripPasteFormatting(e) {
 }
 
 let _urlTarget = null;
+let _openedThisTick = false;
 
 function openUrlPopup(el, e) {
   e.preventDefault();
   e.stopPropagation();
+  _openedThisTick = true;
+  setTimeout(() => { _openedThisTick = false; }, 0);
   _urlTarget = el;
   const input = document.getElementById('url-popup-input');
   input.value = el.getAttribute('href') || '';
   const popup = document.getElementById('url-popup');
   const rect = el.getBoundingClientRect();
-  popup.style.top  = (rect.bottom + 6) + 'px';
+  const popupH = 110; // approx popup height
+  const top = rect.bottom + popupH + 6 > window.innerHeight
+    ? rect.top - popupH - 6
+    : rect.bottom + 6;
+  popup.style.top  = top + 'px';
   popup.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
   popup.style.display = 'block';
   input.focus();
@@ -221,14 +228,12 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('click', e => {
   const popup = document.getElementById('url-popup');
-  if (popup.style.display !== 'none' && !popup.contains(e.target)) closeUrlPopup(false);
+  if (popup.style.display !== 'none' && !popup.contains(e.target) && !_openedThisTick) closeUrlPopup(false);
 });
+document.getElementById('url-popup-input')
+  .addEventListener('keydown', e => { if (e.key === 'Enter') closeUrlPopup(true); });
 
 function activateUrlLinks() {
-  // Enter key in popup input confirms save
-  document.getElementById('url-popup-input')
-    .addEventListener('keydown', e => { if (e.key === 'Enter') closeUrlPopup(true); });
-
   // Links to make URL-editable. Excludes nav scroll anchors (#about etc.)
   [
     '#header footer .icons li a',
@@ -236,17 +241,12 @@ function activateUrlLinks() {
     '#publications .features article .inner p a',
     '#other .features article a.image',
     '#other .features article .inner p a',
+    '#header header p a',
   ].forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
       el.setAttribute('data-url-editable', '');
       el.addEventListener('click', e => openUrlPopup(el, e));
     });
-  });
-
-  // Scholar and CV links live inside a contenteditable <p>
-  document.querySelectorAll('#header header p a').forEach(el => {
-    el.setAttribute('data-url-editable', '');
-    el.addEventListener('click', e => openUrlPopup(el, e));
   });
 }
 
