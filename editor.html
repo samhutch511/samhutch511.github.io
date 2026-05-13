@@ -329,6 +329,56 @@ function triggerImagePicker(img) {
   input.click();
 }
 
+function serialize() {
+  const clone = document.body.cloneNode(true);
+
+  // Remove all editor-injected UI elements (toolbar, popup, overlays)
+  clone.querySelectorAll('[data-editor-ui]').forEach(el => el.remove());
+
+  // Remove contenteditable attributes
+  clone.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+
+  // Remove data-url-editable markers
+  clone.querySelectorAll('[data-url-editable]').forEach(el => {
+    el.removeAttribute('data-url-editable');
+  });
+
+  // Strip cache-bust query params from all img srcs
+  clone.querySelectorAll('img[src]').forEach(img => {
+    img.setAttribute('src', img.getAttribute('src').split('?')[0]);
+  });
+
+  // Restore original body class
+  clone.setAttribute('class', 'is-preload');
+
+  return `<!DOCTYPE HTML>\n<html>\n\t<head>${_originalHead}</head>\n\t${clone.outerHTML}\n</html>`;
+}
+
+async function saveAndCommit() {
+  const btn = document.getElementById('editor-save-btn');
+  btn.disabled = true;
+  setStatus('Saving…', 'saving');
+  try {
+    const resp = await fetch('/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html: serialize() }),
+    });
+    const json = await resp.json();
+    if (json.ok) {
+      setStatus(`Saved ✓ ${json.hash}`, 'saved');
+    } else {
+      setStatus('Save failed: ' + (json.error || 'unknown error'), 'error');
+    }
+  } catch (err) {
+    setStatus('Error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 loadSite();
 </script>
 
