@@ -76,6 +76,30 @@
       text-decoration: underline dotted;
     }
 
+    /* ── Image swap overlays ── */
+    .image.avatar, .image.main, a.image { position: relative; }
+
+    .ed-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(192, 57, 43, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+      cursor: pointer;
+      font-size: 1.4rem;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .image.avatar:hover .ed-img-overlay,
+    .image.main:hover   .ed-img-overlay,
+    a.image:hover       .ed-img-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     /* Push site content below toolbar; sidebar top aligned with toolbar bottom */
     body      { padding-top: 48px; }
     #header   { top: 48px; height: calc(100vh - 48px); }
@@ -250,8 +274,54 @@ function activateUrlLinks() {
   });
 }
 
-// Stub — replaced by full implementation in Task 5
-function activateImages() {}
+function activateImages() {
+  [
+    '.image.avatar',
+    '.image.main',
+    '#publications .features article a.image',
+    '#other .features article a.image',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(container => {
+      const img = container.querySelector('img');
+      if (!img) return;
+      const overlay = document.createElement('div');
+      overlay.className = 'ed-img-overlay';
+      overlay.setAttribute('data-editor-ui', '');
+      overlay.textContent = '📷';
+      overlay.title = 'Click to replace image';
+      overlay.addEventListener('click', () => triggerImagePicker(img));
+      container.appendChild(overlay);
+    });
+  });
+}
+
+function triggerImagePicker(img) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.addEventListener('change', async () => {
+    const file = input.files[0];
+    if (!file) return;
+    const originalSrc = img.getAttribute('src').split('?')[0];
+    const filename = originalSrc.split('/').pop();
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = e => resolve(e.target.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    const resp = await fetch('/upload-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename, data: base64 }),
+    });
+    const json = await resp.json();
+    if (!json.ok) { alert('Image upload failed: ' + json.error); return; }
+    img.src = originalSrc + '?t=' + Date.now();
+    markUnsaved();
+  });
+  input.click();
+}
 
 loadSite();
 </script>
