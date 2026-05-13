@@ -136,6 +136,7 @@ function activateEditing() {
     document.querySelectorAll(sel).forEach(el => {
       el.contentEditable = 'plaintext-only';
       el.addEventListener('input', markUnsaved);
+      el.addEventListener('paste', stripPasteFormatting);
     });
   });
 
