@@ -2,6 +2,7 @@
 """Local editor server. Usage: python editor_server.py"""
 
 import base64
+import re
 import http.server
 import json
 import pathlib
@@ -35,8 +36,10 @@ def save_and_commit(html: str, root: pathlib.Path = ROOT) -> str:
 
 def save_image(file_data: bytes, filename: str, root: pathlib.Path = ROOT) -> str:
     """Write image bytes to images/<filename>. Returns relative path."""
-    (root / 'images').mkdir(exist_ok=True)
     safe_name = pathlib.Path(filename).name  # strip any directory component
+    if not safe_name or not re.match(r'^[\w.\-]+\.(jpg|jpeg|png|gif|webp|svg)$', safe_name, re.IGNORECASE):
+        raise ValueError(f'Invalid image filename: {filename!r}')
+    (root / 'images').mkdir(exist_ok=True)
     (root / 'images' / safe_name).write_bytes(file_data)
     return f'images/{safe_name}'
 

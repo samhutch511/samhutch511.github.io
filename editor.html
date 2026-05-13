@@ -160,7 +160,9 @@ async function loadSite() {
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/html');
 
-    _originalHead = doc.head.innerHTML;
+    // Extract raw head to avoid browser-parser normalization causing noisy diffs
+    const rawHeadMatch = text.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+    _originalHead = rawHeadMatch ? rawHeadMatch[1] : doc.head.innerHTML;
 
     const toolbar = document.getElementById('editor-toolbar');
     [...doc.body.childNodes].forEach(node => {
