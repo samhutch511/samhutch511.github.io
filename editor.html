@@ -58,6 +58,18 @@
     #editor-status.saved   { color: #27ae60; }
     #editor-status.error   { color: #e74c3c; }
 
+    /* ── Editable field highlights ── */
+    [contenteditable]:hover {
+      outline: 2px dashed #f0a500;
+      outline-offset: 2px;
+      cursor: text;
+    }
+    [contenteditable]:focus {
+      outline: 2px solid #f0a500;
+      outline-offset: 2px;
+      background: rgba(240, 165, 0, 0.04);
+    }
+
     /* Push site content below toolbar; sidebar top aligned with toolbar bottom */
     body      { padding-top: 48px; }
     #header   { top: 48px; height: calc(100vh - 48px); }
@@ -114,9 +126,47 @@ async function loadSite() {
   }
 }
 
-// activateEditing(), activateUrlLinks(), activateImages(),
-// URL popup functions, triggerImagePicker(), serialize(), saveAndCommit()
-// — added in subsequent tasks
+function activateEditing() {
+  // Plain text — no HTML markup allowed (name, pub/project titles)
+  [
+    '#header header #logo a',
+    '#publications .features article .inner h4',
+    '#other .features article .inner h4',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.contentEditable = 'plaintext-only';
+      el.addEventListener('input', markUnsaved);
+    });
+  });
+
+  // Rich text — preserves existing <a>, <strong>, <em>, <i>, <br>
+  [
+    '#about .container > p',
+    '#about .container header.major p',
+    '#header header p',
+    '#publications .features article .inner p',
+    '#other .features article .inner p',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.contentEditable = 'true';
+      el.addEventListener('input', markUnsaved);
+      el.addEventListener('paste', stripPasteFormatting);
+    });
+  });
+
+  activateUrlLinks();
+  activateImages();
+}
+
+function stripPasteFormatting(e) {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+  document.execCommand('insertText', false, text);
+}
+
+// Stubs — replaced by the full implementations in Tasks 4 and 5
+function activateUrlLinks() {}
+function activateImages() {}
 
 loadSite();
 </script>
