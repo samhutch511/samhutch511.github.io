@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site Editor</title>
+
+  <!-- Site CSS — same links as index.html -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <style>
+    /* ── Toolbar ── */
+    #editor-toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1rem;
+      z-index: 9999;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.82rem;
+    }
+    #editor-toolbar .ed-label  { color: #fff; font-weight: 700; }
+    #editor-toolbar .ed-hint   { color: #888; font-size: 0.75rem; }
+    #editor-toolbar .ed-spacer { flex: 1; }
+    #editor-toolbar .ed-publish {
+      color: #aaa;
+      font-size: 0.72rem;
+    }
+    #editor-toolbar .ed-publish code {
+      background: #333;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    #editor-save-btn {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      padding: 0.35rem 0.9rem;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #editor-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #editor-status { font-size: 0.78rem; color: #aaa; min-width: 160px; }
+    #editor-status.unsaved { color: #f0a500; }
+    #editor-status.saving  { color: #aaa; }
+    #editor-status.saved   { color: #27ae60; }
+    #editor-status.error   { color: #e74c3c; }
+
+    /* Push site content below toolbar; sidebar top aligned with toolbar bottom */
+    body      { padding-top: 48px; }
+    #header   { top: 48px; height: calc(100vh - 48px); }
+  </style>
+</head>
+<body>
+
+<!-- Toolbar — data-editor-ui marks it for removal during save serialization -->
+<div id="editor-toolbar" data-editor-ui>
+  <span class="ed-label">✎ Site Editor</span>
+  <span class="ed-hint">Click highlighted fields to edit · hover images to swap</span>
+  <div class="ed-spacer"></div>
+  <span class="ed-publish">
+    To publish: click <strong style="color:#fff">Save &amp; Commit</strong>,
+    then run <code>git push origin main</code> in your terminal.
+  </span>
+  <span id="editor-status"></span>
+  <button id="editor-save-btn" onclick="saveAndCommit()">Save &amp; Commit</button>
+</div>
+
+<script>
+let _originalHead = '';
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('editor-status');
+  el.textContent = msg;
+  el.className = cls || '';
+}
+
+function markUnsaved() {
+  setStatus('● unsaved changes', 'unsaved');
+}
+
+async function loadSite() {
+  const resp = await fetch('/index.html');
+  const text = await resp.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+
+  _originalHead = doc.head.innerHTML;
+
+  // Append all site body nodes after the toolbar
+  const toolbar = document.getElementById('editor-toolbar');
+  [...doc.body.childNodes].forEach(node => {
+    document.body.appendChild(document.adoptNode(node));
+  });
+  // Move toolbar back to top (appendChild moved it to end)
+  document.body.insertBefore(toolbar, document.body.firstChild);
+
+  activateEditing();
+  setStatus('');
+}
+
+// activateEditing(), activateUrlLinks(), activateImages(),
+// URL popup functions, triggerImagePicker(), serialize(), saveAndCommit()
+// — added in subsequent tasks
+
+loadSite();
+</script>
+
+</body>
+</html>
