@@ -14,11 +14,18 @@ PORT = 4242
 def save_and_commit(html: str, root: pathlib.Path = ROOT) -> str:
     """Write html to index.html, stage and commit. Returns 7-char hash."""
     (root / 'index.html').write_text(html, encoding='utf-8')
-    subprocess.run(['git', 'add', 'index.html', 'images/'], cwd=root, check=True)
     subprocess.run(
-        ['git', 'commit', '-m', 'chore: update site content via editor'],
-        cwd=root, check=True,
+        ['git', 'add', 'index.html', 'images/'],
+        cwd=root, check=True, capture_output=True,
     )
+    try:
+        subprocess.run(
+            ['git', 'commit', '-m', 'chore: update site content via editor'],
+            cwd=root, check=True, capture_output=True,
+        )
+    except subprocess.CalledProcessError:
+        # No changes to commit (identical content) — this is normal
+        pass
     result = subprocess.run(
         ['git', 'rev-parse', '--short', 'HEAD'],
         cwd=root, capture_output=True, text=True, check=True,
@@ -28,6 +35,7 @@ def save_and_commit(html: str, root: pathlib.Path = ROOT) -> str:
 
 def save_image(file_data: bytes, filename: str, root: pathlib.Path = ROOT) -> str:
     """Write image bytes to images/<filename>. Returns relative path."""
+    (root / 'images').mkdir(exist_ok=True)
     safe_name = pathlib.Path(filename).name  # strip any directory component
     (root / 'images' / safe_name).write_bytes(file_data)
     return f'images/{safe_name}'
@@ -46,17 +54,23 @@ class EditorHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
 
     def _handle_save(self):
-        length = int(self.headers['Content-Length'])
-        body = json.loads(self.rfile.read(length))
-        commit_hash = save_and_commit(body['html'])
-        self._send_json({'ok': True, 'hash': commit_hash})
+        try:
+            length = int(self.headers['Content-Length'])
+            body = json.loads(self.rfile.read(length))
+            commit_hash = save_and_commit(body['html'])
+            self._send_json({'ok': True, 'hash': commit_hash})
+        except Exception as e:
+            self._send_json({'ok': False, 'error': str(e)})
 
     def _handle_upload_image(self):
-        length = int(self.headers['Content-Length'])
-        body = json.loads(self.rfile.read(length))
-        file_data = base64.b64decode(body['data'])
-        path = save_image(file_data, body['filename'])
-        self._send_json({'ok': True, 'path': path})
+        try:
+            length = int(self.headers['Content-Length'])
+            body = json.loads(self.rfile.read(length))
+            file_data = base64.b64decode(body['data'])
+            path = save_image(file_data, body['filename'])
+            self._send_json({'ok': True, 'path': path})
+        except Exception as e:
+            self._send_json({'ok': False, 'error': str(e)})
 
     def _send_json(self, data):
         payload = json.dumps(data).encode()

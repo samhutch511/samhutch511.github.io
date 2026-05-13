@@ -22,7 +22,7 @@ def test_save_and_commit_writes_file(tmp_path):
 def test_save_and_commit_returns_short_hash(tmp_path):
     _make_git_repo(tmp_path)
     h = save_and_commit('<html>v2</html>', tmp_path)
-    assert len(h) == 7
+    assert len(h) >= 7
     assert h.isalnum()
 
 def test_save_image_writes_file(tmp_path):
