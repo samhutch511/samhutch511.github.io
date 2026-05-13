@@ -92,23 +92,26 @@ function markUnsaved() {
 }
 
 async function loadSite() {
-  const resp = await fetch('/index.html');
-  const text = await resp.text();
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(text, 'text/html');
+  try {
+    const resp = await fetch('/index.html');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
 
-  _originalHead = doc.head.innerHTML;
+    _originalHead = doc.head.innerHTML;
 
-  // Append all site body nodes after the toolbar
-  const toolbar = document.getElementById('editor-toolbar');
-  [...doc.body.childNodes].forEach(node => {
-    document.body.appendChild(document.adoptNode(node));
-  });
-  // Move toolbar back to top (appendChild moved it to end)
-  document.body.insertBefore(toolbar, document.body.firstChild);
+    const toolbar = document.getElementById('editor-toolbar');
+    [...doc.body.childNodes].forEach(node => {
+      document.body.appendChild(node);
+    });
+    document.body.insertBefore(toolbar, document.body.firstChild);
 
-  activateEditing();
-  setStatus('');
+    activateEditing();
+    setStatus('');
+  } catch (err) {
+    setStatus('Failed to load site: ' + err.message, 'error');
+  }
 }
 
 // activateEditing(), activateUrlLinks(), activateImages(),
