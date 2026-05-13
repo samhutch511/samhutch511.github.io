@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
-"""Local editor server. Usage: python editor_server.py"""
+"""
+Local WYSIWYG editor server for samhutch511.github.io.
+
+Usage:
+    python editor_server.py
+
+Then open http://localhost:4242/editor.html in your browser.
+
+Workflow:
+    1. Edit text by clicking any highlighted field
+    2. Swap images by hovering and clicking the camera overlay
+    3. Edit link URLs by clicking on underlined links
+    4. Click "Save & Commit" to write index.html and create a git commit
+    5. Run `git push origin main` in your terminal to publish
+"""
 
 import base64
 import re

@@ -1,0 +1,6 @@
+{"type":"server-started","port":59087,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:59087","screen_dir":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/content","state_dir":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/state"}
+{"type":"screen-added","file":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/content/editor-approach.html"}
+{"type":"screen-added","file":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/content/editor-scope.html"}
+{"type":"screen-added","file":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/content/editor-ui-mockup.html"}
+{"type":"screen-added","file":"/Users/samhutchinson/Documents/GitHub/samhutch511.github.io/.superpowers/brainstorm/15907-1778685408/content/waiting-1.html"}
+{"type":"server-stopped","reason":"idle timeout"}

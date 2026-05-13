@@ -1,0 +1,38 @@
+<h2>What kind of editing experience do you want?</h2>
+<p class="subtitle">You already have a Jupyter notebook for text editing — the question is how far to go with the new editor.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Enhanced Notebook</h3>
+      <p>Keep the Jupyter notebook, add an image-picker widget so you can browse your files and swap photos. Same form-field workflow, just more complete.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Builds on what already works</li><li>Minimal new code</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Still editing in form fields, not on the rendered page</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>WYSIWYG Browser Editor</h3>
+      <p>A standalone <code>editor.html</code> that loads your actual site. Text sections become click-to-edit inline. Images show a swap button on hover. One-click save writes back to <code>index.html</code>.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>See the real rendered page as you edit</li><li>Natural click-to-edit experience</li><li>No Python/Jupyter required</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>File saving requires the File System Access API (Chrome/Edge only)</li><li>More JS to write</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Local Python Server + Editor UI</h3>
+      <p>A small Flask server you run locally. It serves your site for preview, handles file uploads for images, and writes back to <code>index.html</code> via HTTP POST. Works in any browser.</p>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Works in any browser (no File System Access API needed)</li><li>Most reliable file I/O</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Need to run a server command to start editing</li><li>Most code to write</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>

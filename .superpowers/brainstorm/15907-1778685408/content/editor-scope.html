@@ -1,0 +1,70 @@
+<h2>What should be editable?</h2>
+<p class="subtitle">Two scope options — click to pick the one that fits how you actually edit your site.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Content Only — text blocks &amp; images</h3>
+      <p>Click to edit the big text areas and swap images. Links and URLs (DOIs, CV link, Scholar URL) stay read-only.</p>
+      <div class="mockup" style="margin-top:0.75rem;font-size:0.8rem">
+        <div class="mockup-header">Editable zones</div>
+        <div class="mockup-body" style="display:grid;grid-template-columns:140px 1fr;gap:0.75rem;font-size:0.78rem">
+          <div style="background:#1e1e1e;color:#fff;padding:0.75rem;border-radius:4px">
+            <div style="background:#555;border-radius:3px;padding:0.3rem 0.5rem;margin-bottom:0.4rem">avatar.jpg</div>
+            <div style="padding:0.3rem 0;color:#aaa">Sam Hutchinson</div>
+            <div style="padding:0.2rem 0;color:#666;font-size:0.72rem">Incoming PhD…</div>
+            <div style="padding:0.2rem 0;color:#666;font-size:0.72rem">Scholar | CV</div>
+          </div>
+          <div>
+            <div style="background:#fff3cd;border:1.5px solid #f0a500;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem">
+              <span style="font-size:0.7rem;color:#b07800;font-weight:600">✎ EDITABLE</span>
+              <div style="color:#333;margin-top:0.2rem">Bio / intro text</div>
+            </div>
+            <div style="background:#fff3cd;border:1.5px solid #f0a500;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem">
+              <span style="font-size:0.7rem;color:#b07800;font-weight:600">✎ EDITABLE</span>
+              <div style="color:#333;margin-top:0.2rem">Publication citation text</div>
+            </div>
+            <div style="border:1.5px solid #ddd;border-radius:4px;padding:0.5rem;color:#999">
+              <span style="font-size:0.7rem;font-weight:600">LOCKED</span>
+              <div style="margin-top:0.2rem">https://doi.org/10.1167/…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Full Editor — text, images, &amp; links</h3>
+      <p>Everything is editable: text blocks, images, DOI links, CV/Scholar URLs, social links, publication titles. Replaces the Jupyter notebook entirely.</p>
+      <div class="mockup" style="margin-top:0.75rem;font-size:0.8rem">
+        <div class="mockup-header">Editable zones</div>
+        <div class="mockup-body" style="display:grid;grid-template-columns:140px 1fr;gap:0.75rem;font-size:0.78rem">
+          <div style="background:#1e1e1e;color:#fff;padding:0.75rem;border-radius:4px">
+            <div style="background:#c0392b;border-radius:3px;padding:0.3rem 0.5rem;margin-bottom:0.4rem;font-size:0.72rem">✎ avatar.jpg</div>
+            <div style="background:#fff3cd;color:#1e1e1e;border-radius:3px;padding:0.2rem 0.4rem;margin-bottom:0.3rem;font-size:0.78rem">✎ Sam Hutchinson</div>
+            <div style="background:#fff3cd;color:#1e1e1e;border-radius:3px;padding:0.2rem 0.4rem;margin-bottom:0.3rem;font-size:0.72rem">✎ Incoming PhD…</div>
+            <div style="background:#fff3cd;color:#1e1e1e;border-radius:3px;padding:0.2rem 0.4rem;font-size:0.72rem">✎ Scholar URL · CV URL</div>
+          </div>
+          <div>
+            <div style="background:#fff3cd;border:1.5px solid #f0a500;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem">
+              <span style="font-size:0.7rem;color:#b07800;font-weight:600">✎ EDITABLE</span>
+              <div style="color:#333;margin-top:0.2rem">Bio / intro text</div>
+            </div>
+            <div style="background:#fff3cd;border:1.5px solid #f0a500;border-radius:4px;padding:0.5rem;margin-bottom:0.5rem">
+              <span style="font-size:0.7rem;color:#b07800;font-weight:600">✎ EDITABLE</span>
+              <div style="color:#333;margin-top:0.2rem">Publication title + citation</div>
+            </div>
+            <div style="background:#fff3cd;border:1.5px solid #f0a500;border-radius:4px;padding:0.5rem;color:#333">
+              <span style="font-size:0.7rem;color:#b07800;font-weight:600">✎ EDITABLE</span>
+              <div style="margin-top:0.2rem">https://doi.org/10.1167/…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
