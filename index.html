@@ -12,16 +12,278 @@
 	</head>
 	<body class="is-preload">
 
+<!-- Toolbar — data-editor-ui marks it for removal during save serialization -->
+
+
+<!-- URL edit popup -->
+
+
+<script>
+let _originalHead = '';
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('editor-status');
+  el.textContent = msg;
+  el.className = cls || '';
+}
+
+function markUnsaved() {
+  setStatus('● unsaved changes', 'unsaved');
+}
+
+async function loadSite() {
+  try {
+    const resp = await fetch('/index.html');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+
+    // Extract raw head to avoid browser-parser normalization causing noisy diffs
+    const rawHeadMatch = text.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+    _originalHead = rawHeadMatch ? rawHeadMatch[1] : doc.head.innerHTML;
+
+    const toolbar = document.getElementById('editor-toolbar');
+    [...doc.body.childNodes].forEach(node => {
+      document.body.appendChild(node);
+    });
+    document.body.insertBefore(toolbar, document.body.firstChild);
+
+    activateEditing();
+    document.getElementById('editor-save-btn').disabled = false;
+    setStatus('');
+  } catch (err) {
+    setStatus('Failed to load site: ' + err.message, 'error');
+  }
+}
+
+function activateEditing() {
+  // Plain text — no HTML markup allowed (name, pub/project titles)
+  [
+    '#header header #logo a',
+    '#publications .features article .inner h4',
+    '#other .features article .inner h4',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.contentEditable = 'plaintext-only';
+      el.addEventListener('input', markUnsaved);
+      el.addEventListener('paste', stripPasteFormatting);
+    });
+  });
+
+  // Rich text — preserves existing <a>, <strong>, <em>, <i>, <br>
+  [
+    '#about .container > p',
+    '#about .container header.major p',
+    '#header header p',
+    '#publications .features article .inner p',
+    '#other .features article .inner p',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.contentEditable = 'true';
+      el.addEventListener('input', markUnsaved);
+      el.addEventListener('paste', stripPasteFormatting);
+    });
+  });
+
+  activateUrlLinks();
+  activateImages();
+}
+
+function stripPasteFormatting(e) {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+  document.execCommand('insertText', false, text);
+}
+
+let _urlTarget = null;
+let _openedThisTick = false;
+
+function openUrlPopup(el, e) {
+  e.preventDefault();
+  e.stopPropagation();
+  _openedThisTick = true;
+  setTimeout(() => { _openedThisTick = false; }, 0);
+  _urlTarget = el;
+  const input = document.getElementById('url-popup-input');
+  input.value = el.getAttribute('href') || '';
+  const popup = document.getElementById('url-popup');
+  const rect = el.getBoundingClientRect();
+  const popupH = 110; // approx popup height
+  const top = rect.bottom + popupH + 6 > window.innerHeight
+    ? rect.top - popupH - 6
+    : rect.bottom + 6;
+  popup.style.top  = top + 'px';
+  popup.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
+  popup.style.display = 'block';
+  input.focus();
+  input.select();
+}
+
+function closeUrlPopup(save) {
+  if (save && _urlTarget) {
+    _urlTarget.setAttribute('href', document.getElementById('url-popup-input').value);
+    markUnsaved();
+  }
+  document.getElementById('url-popup').style.display = 'none';
+  _urlTarget = null;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeUrlPopup(false);
+});
+document.addEventListener('click', e => {
+  const popup = document.getElementById('url-popup');
+  if (popup.style.display !== 'none' && !popup.contains(e.target) && !_openedThisTick) closeUrlPopup(false);
+});
+document.getElementById('url-popup-input')
+  .addEventListener('keydown', e => { if (e.key === 'Enter') closeUrlPopup(true); });
+
+function activateUrlLinks() {
+  // Links to make URL-editable. Excludes nav scroll anchors (#about etc.)
+  [
+    '#header footer .icons li a',
+    '#publications .features article a.image',
+    '#publications .features article .inner p a',
+    '#other .features article a.image',
+    '#other .features article .inner p a',
+    '#header header p a',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.setAttribute('data-url-editable', '');
+      el.addEventListener('click', e => openUrlPopup(el, e));
+    });
+  });
+}
+
+function activateImages() {
+  [
+    '.image.avatar',
+    '.image.main',
+    '#publications .features article a.image',
+    '#other .features article a.image',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(container => {
+      if (container.querySelector('.ed-img-overlay')) return;
+      const img = container.querySelector('img');
+      if (!img) return;
+      const overlay = document.createElement('div');
+      overlay.className = 'ed-img-overlay';
+      overlay.setAttribute('data-editor-ui', '');
+      overlay.textContent = '📷';
+      overlay.title = 'Click to replace image';
+      overlay.addEventListener('click', e => { e.stopPropagation(); triggerImagePicker(img); });
+      container.appendChild(overlay);
+    });
+  });
+}
+
+function triggerImagePicker(img) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.addEventListener('change', async () => {
+    const file = input.files[0];
+    if (!file) return;
+    try {
+      const originalSrc = img.getAttribute('src').split('?')[0];
+      const filename = originalSrc.split('/').pop();
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = e => resolve(e.target.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const resp = await fetch('/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, data: base64 }),
+      });
+      if (!resp.ok) { alert('Upload failed: HTTP ' + resp.status); return; }
+      const json = await resp.json();
+      if (!json.ok) { alert('Image upload failed: ' + json.error); return; }
+      img.src = originalSrc + '?t=' + Date.now();
+      markUnsaved();
+    } catch (err) {
+      alert('Upload failed: ' + err.message);
+    }
+  });
+  input.click();
+}
+
+function serialize() {
+  const clone = document.body.cloneNode(true);
+
+  // Remove all editor-injected UI elements (toolbar, popup, overlays)
+  clone.querySelectorAll('[data-editor-ui]').forEach(el => el.remove());
+
+  // Remove contenteditable attributes
+  clone.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+
+  // Remove data-url-editable markers
+  clone.querySelectorAll('[data-url-editable]').forEach(el => {
+    el.removeAttribute('data-url-editable');
+  });
+
+  // Strip cache-bust query params from all img srcs
+  clone.querySelectorAll('img[src]').forEach(img => {
+    img.setAttribute('src', img.getAttribute('src').split('?')[0]);
+  });
+
+  // Strip runtime scroll-state classes injected by main.js
+  clone.querySelectorAll('.active, .active-locked, .inactive').forEach(el => {
+    el.classList.remove('active', 'active-locked', 'inactive');
+  });
+
+  // Restore original body class
+  clone.setAttribute('class', 'is-preload');
+
+  return `<!DOCTYPE HTML>\n<html>\n\t<head>${_originalHead}</head>\n\t${clone.outerHTML}\n</html>`;
+}
+
+async function saveAndCommit() {
+  const btn = document.getElementById('editor-save-btn');
+  btn.disabled = true;
+  setStatus('Saving…', 'saving');
+  try {
+    const resp = await fetch('/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html: serialize() }),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const json = await resp.json();
+    if (json.ok) {
+      setStatus(`Saved ✓ ${json.hash}`, 'saved');
+    } else {
+      setStatus('Save failed: ' + (json.error || 'unknown error'), 'error');
+    }
+  } catch (err) {
+    setStatus('Error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+loadSite();
+</script>
+
+
+
+
+
 		<!-- Header -->
 			<section id="header">
 				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+					<span class="image avatar"><img src="images/avatar.jpg" alt=""></span>
 					<h1 id="logo"><a href="#">Sam Hutchinson</a></h1>
-					<p>Incoming PhD student @ MIT BCS<br /><br /><a href="https://scholar.google.com/citations?user=PSwpcAEAAAAJ&hl=en">Google Scholar</a> || <a href="https://drive.google.com/file/d/1FygR-qgIRq20ijzF87C08C6OQb4NsCNT/view?usp=sharing">CV</a></p>
+					<p>Incoming PhD student @ MIT BCS<br><br><a href="https://scholar.google.com/citations?user=PSwpcAEAAAAJ&amp;hl=en">Google Scholar</a> || <a href="https://drive.google.com/file/d/1FygR-qgIRq20ijzF87C08C6OQb4NsCNT/view?usp=sharing">CV</a></p>
 				</header>
 				<nav id="nav">
 					<ul>
-						<li><a href="#about" class="active">About</a></li>
+						<li><a href="#about" class="">About</a></li>
 						<li><a href="#publications">Publications</a></li>
 						<li><a href="#other">Other Projects</a></li>
 					</ul>
@@ -44,14 +306,14 @@
 						<!-- One -->
 							<section id="about">
 								<div class="image main" data-position="center">
-									<img src="images/banner.jpg" alt="" />
+									<img src="images/banner.jpg" alt="">
 								</div>
 								<div class="container">
 									<header class="major">
 										<h2>Sam Hutchinson</h2>
-										<p>Welcome to my webpage!<br />I am an incoming PhD student at <a href="https://bcs.mit.edu/">MIT in the Department of Brain and Cognitive Sciences</a>.</p>
+										<p>Welcome to my webpage!<br>I am an incoming PhD student at <a href="https://bcs.mit.edu/">MIT in the Department of Brain and Cognitive Sciences</a>.</p>
 									</header>
-									<p>I want to understand 1) what makes us such effective communicators, teachers, and learners, and 2) how we are able to develop rich, productive theories which revolve around entities we cannot perceive. How do we efficiently communicate our theories, both scientific and intuitive, to each other in both everyday situations and more formal settings? How do we represent abstract concepts like <i>electrons</i> or <i>inflation</i>, which we primarily learn about through other people's language? To what extent are our representations of these concepts tied to our linguistic abilities?<br /><br />Prior to grad school, I worked as a lab tech in the <a href="https://web.mit.edu/bcs/nklab/">Kanwisher Lab at MIT</a> for two years. I mainly contributed to projects using fMRI in new and interesting ways, such as scanning concurrently with electrical stimulation to map out connectivity patterns (es-fMRI), or by using an Efficient Localizer to define many functionally-specific cortical regions simultaneously. You can read about that Efficient Localizer project <a href="https://jov.arvojournals.org/article.aspx?articleid=2801059">here!</a> <br /><br />I completed my undergrad at Columbia University, studying cognitive science and computer science, and working in the <a href="https://www.dpmlab.org/">Dynamic Perception and Memory Lab</a> with Dr. Chris Baldassano. There, I worked on projects comparing internal representations from GPT-2 to human fMRI responses, and, for my senior thesis, to human behavioral measures of surprise.</p>
+									<p>I want to understand 1) what makes us such effective communicators, teachers, and learners, and 2) how we are able to develop rich, productive theories which revolve around entities we cannot perceive. How do we efficiently communicate our theories, both scientific and intuitive, to each other in both everyday situations and more formal settings? How do we represent abstract concepts like <i>electrons</i> or <i>inflation</i>, which we primarily learn about through other people's language? To what extent are our representations of these concepts tied to our linguistic abilities?<br><br>Prior to grad school, I worked as a lab tech in the <a href="https://web.mit.edu/bcs/nklab/">Kanwisher Lab at MIT</a> for two years. I mainly contributed to projects using fMRI in new and interesting ways, such as scanning concurrently with electrical stimulation to map out connectivity patterns (es-fMRI), or by using an Efficient Localizer to define many functionally-specific cortical regions simultaneously. You can read about that Efficient Localizer project <a href="https://jov.arvojournals.org/article.aspx?articleid=2801059">here!</a> <br><br>I completed my undergrad at Columbia University, studying cognitive science and computer science, and working in the <a href="https://www.dpmlab.org/">Dynamic Perception and Memory Lab</a> with Dr. Chris Baldassano. There, I worked on projects comparing internal representations from GPT-2 to human fMRI responses, and, for my senior thesis, to human behavioral measures of surprise.</p>
 								</div>
 							</section>
 
@@ -63,24 +325,24 @@
 									<p>Hopefully more to come soon!</p>
 									<div class="features">
 										<article>
-											<a href="https://doi.org/10.1167/jov.24.10.668" class="image"><img src="images/pic01.jpg" alt="" /></a>
+											<a href="https://doi.org/10.1167/jov.24.10.668" class="image"><img src="images/pic01.jpg" alt=""></a>
 											<div class="inner">
 												<h4>An Efficient Multimodal fMRI Localizer</h4>
-												<p><strong><i>Hutchinson, S.</i></strong>, Marvi, A., Kamps, F., Chen, E., Fedorenko, E., Saxe, R., & Kanwisher, N. (2024). An Efficient Multimodal fMRI Localizer for High-Level Visual, Auditory, and Cognitive Regions in Humans. Journal of Vision, 24, 668. <a href="https://doi.org/10.1167/jov.24.10.668">https://doi.org/10.1167/jov.24.10.668</a></p>
+												<p><strong><i>Hutchinson, S.</i></strong>, Marvi, A., Kamps, F., Chen, E., Fedorenko, E., Saxe, R., &amp; Kanwisher, N. (2024). An Efficient Multimodal fMRI Localizer for High-Level Visual, Auditory, and Cognitive Regions in Humans. Journal of Vision, 24, 668. <a href="https://doi.org/10.1167/jov.24.10.668">https://doi.org/10.1167/jov.24.10.668</a></p>
 											</div>
 										</article>
 										<article>
-											<a href="https://doi.org/10.1101/2024.09.13.612953" class="image"><img src="images/pic02.jpg" alt="" /></a>
+											<a href="https://doi.org/10.1101/2024.09.13.612953" class="image"><img src="images/pic02.jpg" alt=""></a>
 											<div class="inner">
 												<h4>Attachment-Schema Narratives</h4>
-												<p>Lee, C. S., Cohen, S. S., <strong><i>Hutchinson, S.</i></strong>, Tottenham, N., & Baldassano, C. (2024). Neural and verbal responses to attachment-schema narratives differ based on past and current caregiving experiences. bioRxiv, 2024-09. <a href="https://doi.org/10.1101/2024.09.13.612953">https://doi.org/10.1101/2024.09.13.612953</a></p>
+												<p>Lee, C. S., Cohen, S. S., <strong><i>Hutchinson, S.</i></strong>, Tottenham, N., &amp; Baldassano, C. (2024). Neural and verbal responses to attachment-schema narratives differ based on past and current caregiving experiences. bioRxiv, 2024-09. <a href="https://doi.org/10.1101/2024.09.13.612953">https://doi.org/10.1101/2024.09.13.612953</a></p>
 											</div>
 										</article>
 										<article>
-											<a href="https://doi.org/10.1080/09658211.2023.2166078" class="image"><img src="images/pic03.jpg" alt="" /></a>
+											<a href="https://doi.org/10.1080/09658211.2023.2166078" class="image"><img src="images/pic03.jpg" alt=""></a>
 											<div class="inner">
 												<h4>Familiar Music and Episodic Memory</h4>
-												<p>Bloom, P. A., Bartlett, E., Kathios, N., Algharazi, S., Siegelman, M., Shen, F., Beresford, L., DiMaggio-Potter, M., Singh, A., Bennett, S., Natarajan, N., Lee, H., Sajid, S., Joyce, E., Fischman, R., <strong><i>Hutchinson, S.</i></strong>, Pan, S. Tottenham, N., & Aly, M. (2023). Effects of familiar music exposure on deliberate retrieval of remote episodic and semantic memories in healthy aging adults. Memory, 31(3), 428-456. <a href="https://doi.org/10.1080/09658211.2023.2166078">https://doi.org/10.1080/09658211.2023.2166078</a></p>
+												<p>Bloom, P. A., Bartlett, E., Kathios, N., Algharazi, S., Siegelman, M., Shen, F., Beresford, L., DiMaggio-Potter, M., Singh, A., Bennett, S., Natarajan, N., Lee, H., Sajid, S., Joyce, E., Fischman, R., <strong><i>Hutchinson, S.</i></strong>, Pan, S. Tottenham, N., &amp; Aly, M. (2023). Effects of familiar music exposure on deliberate retrieval of remote episodic and semantic memories in healthy aging adults. Memory, 31(3), 428-456. <a href="https://doi.org/10.1080/09658211.2023.2166078">https://doi.org/10.1080/09658211.2023.2166078</a></p>
 											</div>
 										</article>
 									</div>
@@ -94,7 +356,7 @@
 									<p>Here is where you can find other coding and writing that I like to do, usually on related topics but presented in a less-formal way!</p>
                                     <div class="features">
 										<article>
-											<a href="nlp-project/" class="image"><img src="images/pic01.jpg" alt="" /></a>
+											<a href="nlp-project/" class="image"><img src="images/pic01.jpg" alt=""></a>
 											<div class="inner">
 												<h4>EEGym</h4>
 												<p>A standardized EEG benchmark comparing LLM representations to human N400 responses
@@ -103,14 +365,14 @@
 											</div>
 										</article>
 										<article>
-											<a href="https://github.com/samhutch511/GPT_Text_Vis" class="image"><img src="images/pic04.jpg" alt="" /></a>
+											<a href="https://github.com/samhutch511/GPT_Text_Vis" class="image"><img src="images/pic04.jpg" alt=""></a>
 											<div class="inner">
 												<h4>GPT-2 Text Visualizer</h4>
 												<p>A little app I made for visualizing the GPT-2 surprisal and attention weight of each token in an arbitrary sequence! <a href="https://github.com/samhutch511/GPT_Text_Vis">Here is the GitHub repo!</a></p>
 											</div>
 										</article>
 										<article>
-											<a href="https://www.thegadflymagazine.org/home-1/kss9zugjdiabbczax62ak5i0e0m86u" class="image"><img src="images/pic05.jpg" alt="" /></a>
+											<a href="https://www.thegadflymagazine.org/home-1/kss9zugjdiabbczax62ak5i0e0m86u" class="image"><img src="images/pic05.jpg" alt=""></a>
 											<div class="inner">
 												<h4>Fanon, Nietzsche, and the Rhetoric of American Political Power</h4>
 												<p>2022 Article for the Gadfly, Columbia’s undergraduate philosophy magazine.
@@ -129,7 +391,7 @@ An analysis of how progressive social movements and conservative media outlets m
 					<section id="footer">
 						<div class="container">
 							<ul class="copyright">
-								<li>&copy; Samuel Hutchinson &middot; samhutch@mit.edu</li>
+								<li>© Samuel Hutchinson · samhutch@mit.edu</li>
 							</ul>
 						</div>
 					</section>
@@ -145,5 +407,7 @@ An analysis of how progressive social movements and conservative media outlets m
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
-	</body>
+	
+
+</body>
 </html>
