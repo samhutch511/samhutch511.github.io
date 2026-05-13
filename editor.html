@@ -70,6 +70,12 @@
       background: rgba(240, 165, 0, 0.04);
     }
 
+    /* ── URL editable links ── */
+    a[data-url-editable] {
+      cursor: pointer;
+      text-decoration: underline dotted;
+    }
+
     /* Push site content below toolbar; sidebar top aligned with toolbar bottom */
     body      { padding-top: 48px; }
     #header   { top: 48px; height: calc(100vh - 48px); }
@@ -88,6 +94,25 @@
   </span>
   <span id="editor-status"></span>
   <button id="editor-save-btn" onclick="saveAndCommit()">Save &amp; Commit</button>
+</div>
+
+<!-- URL edit popup -->
+<div id="url-popup" data-editor-ui style="display:none;position:fixed;z-index:10000;
+     background:#fff;border:1px solid #ddd;border-radius:6px;padding:0.65rem 0.75rem;
+     box-shadow:0 4px 16px rgba(0,0,0,0.15);font-family:'IBM Plex Sans',sans-serif;
+     font-size:0.82rem;min-width:320px;">
+  <div style="color:#777;margin-bottom:0.4rem;font-size:0.72rem;font-weight:600;letter-spacing:0.05em">EDIT URL</div>
+  <input id="url-popup-input" type="url" autocomplete="off"
+    style="width:100%;border:1px solid #ccc;border-radius:4px;padding:0.3rem 0.5rem;
+           font-family:inherit;font-size:0.82rem;box-sizing:border-box;">
+  <div style="display:flex;gap:0.5rem;margin-top:0.5rem;justify-content:flex-end">
+    <button onclick="closeUrlPopup(false)"
+      style="border:1px solid #ccc;background:#fff;padding:0.25rem 0.7rem;
+             border-radius:4px;cursor:pointer;font-family:inherit;font-size:0.78rem">Cancel</button>
+    <button onclick="closeUrlPopup(true)"
+      style="border:none;background:#c0392b;color:#fff;padding:0.25rem 0.7rem;
+             border-radius:4px;cursor:pointer;font-family:inherit;font-size:0.78rem;font-weight:600">Save</button>
+  </div>
 </div>
 
 <script>
@@ -165,8 +190,67 @@ function stripPasteFormatting(e) {
   document.execCommand('insertText', false, text);
 }
 
-// Stubs — replaced by the full implementations in Tasks 4 and 5
-function activateUrlLinks() {}
+let _urlTarget = null;
+
+function openUrlPopup(el, e) {
+  e.preventDefault();
+  e.stopPropagation();
+  _urlTarget = el;
+  const input = document.getElementById('url-popup-input');
+  input.value = el.getAttribute('href') || '';
+  const popup = document.getElementById('url-popup');
+  const rect = el.getBoundingClientRect();
+  popup.style.top  = (rect.bottom + 6) + 'px';
+  popup.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
+  popup.style.display = 'block';
+  input.focus();
+  input.select();
+}
+
+function closeUrlPopup(save) {
+  if (save && _urlTarget) {
+    _urlTarget.setAttribute('href', document.getElementById('url-popup-input').value);
+    markUnsaved();
+  }
+  document.getElementById('url-popup').style.display = 'none';
+  _urlTarget = null;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeUrlPopup(false);
+});
+document.addEventListener('click', e => {
+  const popup = document.getElementById('url-popup');
+  if (popup.style.display !== 'none' && !popup.contains(e.target)) closeUrlPopup(false);
+});
+
+function activateUrlLinks() {
+  // Enter key in popup input confirms save
+  document.getElementById('url-popup-input')
+    .addEventListener('keydown', e => { if (e.key === 'Enter') closeUrlPopup(true); });
+
+  // Links to make URL-editable. Excludes nav scroll anchors (#about etc.)
+  [
+    '#header footer .icons li a',
+    '#publications .features article a.image',
+    '#publications .features article .inner p a',
+    '#other .features article a.image',
+    '#other .features article .inner p a',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.setAttribute('data-url-editable', '');
+      el.addEventListener('click', e => openUrlPopup(el, e));
+    });
+  });
+
+  // Scholar and CV links live inside a contenteditable <p>
+  document.querySelectorAll('#header header p a').forEach(el => {
+    el.setAttribute('data-url-editable', '');
+    el.addEventListener('click', e => openUrlPopup(el, e));
+  });
+}
+
+// Stub — replaced by full implementation in Task 5
 function activateImages() {}
 
 loadSite();
